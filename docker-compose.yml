@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./static:/static
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - web
+  db:
+    image: postgres
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  web:
+    build: .
+    command: gunicorn sigecc.wsgi:application -w 3 -b 0.0.0.0:8000 --reload --log-level=debug --access-logfile=- --log-file=-
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

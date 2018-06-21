@@ -1,0 +1,128 @@
+[
+   {
+      "model":"core.perfilpergunta",
+      "pk":1,
+      "fields":{
+         "pergunta":"Estar em vantagem em rela\u00e7\u00e3o aos outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":2,
+      "fields":{
+         "pergunta":"Observar seu desempenho em rela\u00e7\u00e3o a outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":3,
+      "fields":{
+         "pergunta":"Derrotar outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":4,
+      "fields":{
+         "pergunta":"Voc\u00ea gosta de fazer coisas que incomodam outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":5,
+      "fields":{
+         "pergunta":"Competir com outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":6,
+      "fields":{
+         "pergunta":"Tornar-se muito bom em um jogo?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":7,
+      "fields":{
+         "pergunta":"Pensa em itens ou caracter\u00edsticas que poderiam ser mudadas para customizar a apar\u00eancia do seu personagem ou o jogo em si?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":8,
+      "fields":{
+         "pergunta":"A armadura ou roupas de seu personagem estejam combinando em cor e estilo ou que as pe\u00e7as do jogo tenham uma apar\u00eancia interessante?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":9,
+      "fields":{
+         "pergunta":"A apar\u00eancia do seu personagem seja diferente da apar\u00eancia de outros personagens?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":10,
+      "fields":{
+         "pergunta":"Quanto tempo voc\u00ea passa customizando seu personagem durante a cria\u00e7\u00e3o dele?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":11,
+      "fields":{
+         "pergunta":"Voc\u00ea gosta de estar imerso em um mundo de fantasia?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":12,
+      "fields":{
+         "pergunta":"Conversar com outros jogadores (on-line) sobre seus problemas/quest\u00f5es pessoais?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":13,
+      "fields":{
+         "pergunta":"Com que frequ\u00eancia outros jogadores (on-line) te ofereceram ajuda quando voc\u00ea teve um problema na vida real?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":14,
+      "fields":{
+         "pergunta":"Tem conversas significativas com outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":15,
+      "fields":{
+         "pergunta":"Voc\u00ea gosta de ajudar outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":16,
+      "fields":{
+         "pergunta":"Voc\u00ea gosta de conhecer outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":17,
+      "fields":{
+         "pergunta":"Voc\u00ea gosta de conversar com outros jogadores?"
+      }
+   },
+   {
+      "model":"core.perfilpergunta",
+      "pk":18,
+      "fields":{
+         "pergunta":"Procura fazer parte de um grupo em jogos?"
+      }
+   }
+]
