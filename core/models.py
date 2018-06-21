@@ -5,6 +5,7 @@ class Modulo(models.Model):
     colaboracao = models.BooleanField(default=False)
     competicao = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
+    liberado = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.ativo:
@@ -24,7 +25,7 @@ class Aluno(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nascimento = models.DateField()
-    genero = models.CharField(max_length=1,choices=GENERO_CHOICES)
+    genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     perfil = models.ManyToManyField("PerfilResposta")
     grupo = models.ForeignKey("Grupo", null=True, on_delete=models.CASCADE)
 
@@ -51,7 +52,11 @@ class PerfilResposta(models.Model):
 
 
 class Grupo(models.Model):
+    nome = models.CharField(max_length=100, blank=True)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nome
 
 
 class Placar(models.Model):
