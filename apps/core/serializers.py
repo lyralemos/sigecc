@@ -26,7 +26,7 @@ class PerfilRespostaSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AlunoSerializer(serializers.HyperlinkedModelSerializer):
+class AlunoSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
     perfil = PerfilRespostaSerializer(required=True, many=True)
     grupo = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -37,6 +37,23 @@ class AlunoSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ModuloSerializer(serializers.ModelSerializer):
+    alunos_count = serializers.SerializerMethodField()
+    questoes_count = serializers.SerializerMethodField()
+    grupos_count = serializers.SerializerMethodField()
+    placar = serializers.SerializerMethodField()
+
+    def get_alunos_count(self, obj):
+        return Aluno.objects.filter(grupo__modulo__ativo=True).count()
+
+    def get_grupos_count(self, obj):
+        return obj.grupo_set.count()
+
+    def get_questoes_count(self, obj):
+        return obj.questao_set.count()
+
+    def get_placar(self, obj):
+        return PlacarSerializer(Placar.objects.filter(grupo__modulo__ativo=True), many=True).data
+
     class Meta(object):
         model = Modulo
         fields = '__all__'
@@ -49,6 +66,8 @@ class GrupoSerializer(serializers.ModelSerializer):
 
 
 class PlacarSerializer(serializers.ModelSerializer):
+    grupo = serializers.StringRelatedField()
+
     class Meta(object):
         model = Placar
         fields = '__all__'

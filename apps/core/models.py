@@ -27,7 +27,7 @@ class Aluno(models.Model):
     nascimento = models.DateField()
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     perfil = models.ManyToManyField("PerfilResposta")
-    grupo = models.ForeignKey("Grupo", null=True, on_delete=models.CASCADE)
+    grupo = models.ForeignKey("Grupo", blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
