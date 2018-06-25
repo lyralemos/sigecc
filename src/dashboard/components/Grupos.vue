@@ -1,17 +1,21 @@
 <template>
   <section>
-    <h1>Alunos</h1>
+    <h1>Grupos</h1>
 
     <table class="table table-bordered">
       <tr>
         <th>Nome</th>
-        <th>Data de Nascimento</th>
-        <th>Gênero</th>
+        <th>Alunos</th>
       </tr>
-      <tr v-for="aluno in alunos">
-        <td>{{ aluno.nome }}</td>
-        <td>{{ aluno.nascimento }}</td>
-        <td>{{ aluno.genero }}</td>
+      <tr v-for="grupo in grupos">
+        <td>{{ grupo.nome }}</td>
+        <td>
+          <ul>
+            <li v-for="aluno in grupo.aluno_set">
+              {{ aluno.nome }}
+            </li>
+          </ul>
+        </td>
       </tr>
     </table>
   </section>
@@ -21,15 +25,15 @@
 
 export default{
   data: function () {
-    return {alunos: []}
+    return {grupos: []}
   },
 
   methods: {
-    getAlunos: function () {
+    getGrupos: function () {
       this.$global.loading = true
-      this.$http.get('/api/v1/alunos/')
+      this.$http.get('/api/v1/grupos/')
       .then((response) => {
-        this.alunos = response.data
+        this.grupos = response.data
         this.$global.loading = false
       })
       .catch((err) => {
@@ -39,7 +43,7 @@ export default{
     }
   },
   mounted: function () {
-    this.getAlunos()
+    this.getGrupos()
   }
 }
 </script>

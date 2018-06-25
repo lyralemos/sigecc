@@ -25,7 +25,7 @@ SECRET_KEY = '(4gryvk*gdj$5dor!wap)ap&411$c7pzs10=19(w5@r%r&e&2-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'apps.core',
-    'apps.dashboard',
 ]
 
 MIDDLEWARE = [

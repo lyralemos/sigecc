@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Aluno, PerfilResposta, PerfilPergunta, Modulo, Grupo, Placar,\
-    Questao, Pergunta
+    Questao, Pergunta, AlunoResposta
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'email')
 
 
 class PerfilPerguntaSerializer(serializers.ModelSerializer):
@@ -28,7 +28,6 @@ class PerfilRespostaSerializer(serializers.ModelSerializer):
 
 class AlunoSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
-    perfil = PerfilRespostaSerializer(required=True, many=True)
     grupo = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta(object):
@@ -40,16 +39,22 @@ class ModuloSerializer(serializers.ModelSerializer):
     alunos_count = serializers.SerializerMethodField()
     questoes_count = serializers.SerializerMethodField()
     grupos_count = serializers.SerializerMethodField()
+    respostas_count = serializers.SerializerMethodField()
     placar = serializers.SerializerMethodField()
 
     def get_alunos_count(self, obj):
-        return Aluno.objects.filter(grupo__modulo__ativo=True).count()
+        return obj.aluno_set.count()
 
     def get_grupos_count(self, obj):
         return obj.grupo_set.count()
 
     def get_questoes_count(self, obj):
         return obj.questao_set.count()
+
+    def get_respostas_count(self, obj):
+        return AlunoResposta.objects.filter(
+            pergunta__questao__modulos__pk=obj.pk
+        ).count()
 
     def get_placar(self, obj):
         return PlacarSerializer(Placar.objects.filter(grupo__modulo__ativo=True), many=True).data
@@ -60,6 +65,8 @@ class ModuloSerializer(serializers.ModelSerializer):
 
 
 class GrupoSerializer(serializers.ModelSerializer):
+    aluno_set = AlunoSerializer(many=True)
+
     class Meta(object):
         model = Grupo
         fields = '__all__'

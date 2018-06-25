@@ -12,7 +12,7 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    //app: './src/main.js',
+    mobile: './src/mobile/main.js',
     dashboard: './src/dashboard/main.js'
   },
   plugins: [

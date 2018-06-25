@@ -1,101 +1,108 @@
 <template>
-  <div>
-    <h1>Ao vivo</h1>
-
-    <div class="row">
-      <div class="col-md-4">
-        <h3><i class="fas fa-graduation-cap"></i> Alunos</h3>
-        <span class="destaque">
-          {{ modulo.alunos_count }}
-        </span>
+  <div class="home">
+    <section class="inferior">
+      <div class="item">
+        <i class="fas fa-graduation-cap"></i><br />
+        <span class="numero">{{ modulo.alunos_count }}</span><br />
+        <span class="detalhe">Alunos</span><br />
+        <span class="discreto">Cadastrados no módulo</span>
       </div>
-
-      <div class="col-md-4">
-        <h3><i class="fas fa-users"></i> Grupos</h3>
-        <span class="destaque">
-          {{ modulo.grupos_count }}
-        </span>
+      <div class="item">
+        <i class="fas fa-users"></i><br />
+        <span class="numero">{{ modulo.grupos_count }}</span><br />
+        <span class="detalhe">Grupos</span><br />
+        <span class="discreto">Cadastrados no módulo</span>
       </div>
-
-      <div class="col-md-4">
-        <h3><i class="fas fa-question-circle"></i> Questões</h3>
-        <span class="destaque">
-          {{ modulo.questoes_count }}
-        </span>
+      <div class="item">
+        <i class="fas fa-question-circle"></i><br />
+        <span class="numero">{{ modulo.questoes_count }}</span><br />
+        <span class="detalhe">Questões</span><br />
+        <span class="discreto">Disponíveis para os alunos</span>
       </div>
-    </div>
-    <br />
-    <div class="row">
-      <div class="col-md-6">
-        <h3><i class="fa fa-archive"></i> Modulo</h3>
-        <table class="table table-bordered">
-          <tr>
-            <th>Opção</th>
-            <th style="width:30px">Status</th>
-          </tr>
-          <tr>
-            <td>Competição</td>
-            <td style="text-align:center">
-              <span class="badge badge-pill badge-success" v-if="modulo.competicao===true">
-                <i class="fa fa-ckeck"></i>
-              </span>
-              <span class="badge badge-pill badge-danger" v-if="modulo.competicao===false">
-                <i class="fa fa-times"></i>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>Colaboração</td>
-            <td style="text-align:center">
-              <span class="badge badge-pill badge-success" v-if="modulo.colaboracao===true">
-                <i class="fa fa-ckeck"></i>
-              </span>
-              <span class="badge badge-pill badge-danger" v-if="modulo.colaboracao===false">
-                <i class="fa fa-times"></i>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>Liberado</td>
-            <td style="text-align:center">
-              <span class="badge badge-pill badge-success" v-if="modulo.liberado===true">
-                <i class="fa fa-ckeck"></i>
-              </span>
-              <span class="badge badge-pill badge-danger" v-if="modulo.liberado===false">
-                <i class="fa fa-times"></i>
-              </span>
-            </td>
-          </tr>
+      <div class="item">
+        <i class="fas fa-chart-line"></i><br />
+        <span class="numero">{{ modulo.respostas_count }}</span><br />
+        <span class="detalhe">Respostas</span><br />
+        <span class="discreto">Total de respostas até agora.</span>
+      </div>
+    </section>
+    <section class="tabelas">
+      <div class="item">
+        <div class="titulo">
+          <span>Módulo ativado</span>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Opção</th>
+              <th style="width:30px">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Competição</td>
+              <td style="text-align:center">
+                <Check :bool="modulo.competicao"></Check>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Colaboração</td>
+              <td style="text-align:center">
+                <Check :bool="modulo.colaboracao"></Check>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Liberado</td>
+              <td style="text-align:center">
+                <Check :bool="modulo.liberado"></Check>
+              </td>
+            </tr>
+          </tbody>
         </table>
-
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-warning">Sortear grupos</button>
-          <button type="button" class="btn btn-success">Liberar questões</button>
-          <button type="button" class="btn btn-danger">Fechar sistema</button>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cog"></i> Ações
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"
+              href="#"
+              v-bind:class="{'disabled':modulo.liberado}"
+              v-on:click="liberar">Liberar questões</a>
+            <a class="dropdown-item"
+              v-bind:class="{'disabled':!modulo.liberado}">Finalizar</a>
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <h3><i class="fa fa-trophy"></i> Placar</h3>
-        <table class="table bg-light">
+      <div class="item">
+        <div class="titulo">
+          <span>Placar</span>
+        </div>
+        <table class="table">
           <tr>
             <th>Posição</th>
-            <th>Pontos</th>
             <th>Nome</th>
+            <th>Pontos</th>
           </tr>
           <tr v-for="(placar, index) in modulo.placar">
             <td>{{ index+1 }}</td>
-            <td>{{ placar.pontos }}</td>
             <td>{{ placar.grupo }}</td>
+            <td>{{ placar.pontos }}</td>
           </tr>
         </table>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
+import Check from './Check.vue'
 export default {
   name: 'Home',
+  components: {
+    'Check': Check
+  },
   data: function () {
     return {
       modulo: [],
@@ -114,6 +121,22 @@ export default {
         this.$global.loading = false
         console.log(err)
       })
+    },
+    liberar: function () {
+      if (!this.modulo.liberado) {
+        var c = confirm('Deseja liberar o sistema para os alunos?')
+        if (c) {
+          this.$global.loading = true
+          this.$http.get('/api/v1/modulos/liberar/')
+            .then((response) => {
+              this.$global.loading = false
+            })
+            .catch((err) => {
+              this.$global.loading = false
+              console.log(err)
+            })
+        }
+      }
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -132,4 +155,42 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  .tabelas{
+    padding-top: 20px;
+    display: flex;
+  }
+
+  .tabelas .item{
+    width: 47%;
+    text-align: left;
+  }
+
+  .tabelas .item i{font-size:14px }
+
+  .titulo span{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 15px;
+    color: #67472b;
+    display: inline-block;
+  }
+
+  .inferior{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+  }
+
+  .item{
+    background-color: #fff;
+    padding: 20px;
+    width: 22%;
+    text-align: center;
+    margin-right: 3%;
+  }
+  .item i{font-size: 30px;}
+  .item .numero{font-size: 40px}
+  .item .detalhe{color:#27b756}
+  .item .discreto{font-size: 11px; color: #aaa}
+</style>

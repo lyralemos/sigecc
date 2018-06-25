@@ -15,6 +15,7 @@ class Modulo(models.Model):
             qs.update(ativo=False)
         super(Modulo, self).save(*args, **kwargs)
 
+
 class Aluno(models.Model):
     MASCULINO = "M"
     FEMININO = "F"
@@ -24,16 +25,18 @@ class Aluno(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    grupo = models.ForeignKey("Grupo", blank=True, null=True, on_delete=models.CASCADE)
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=200)
     nascimento = models.DateField()
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
-    perfil = models.ManyToManyField("PerfilResposta")
-    grupo = models.ForeignKey("Grupo", blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.nome
 
 
 class PerfilPergunta(models.Model):
+    codigo = models.CharField(max_length=50)
     pergunta = models.CharField(max_length=300)
 
     def __str__(self):
@@ -42,6 +45,7 @@ class PerfilPergunta(models.Model):
 
 class PerfilResposta(models.Model):
     pergunta = models.ForeignKey(PerfilPergunta, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     resposta = models.IntegerField()
 
     def __str__(self):
@@ -56,8 +60,9 @@ class Grupo(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
 
     def __str__(self):
+        if self.aluno_set.count() == 1:
+            return self.aluno_set.all()[0].nome
         return self.nome
-
 
 class Placar(models.Model):
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
@@ -91,6 +96,7 @@ RESPOSTA_CHOICE = (
 class Pergunta(models.Model):
 
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=200)
     opcao1 = models.CharField(max_length=200)
     opcao2 = models.CharField(max_length=200)
     opcao3 = models.CharField(max_length=200)
@@ -109,6 +115,9 @@ class AlunoResposta(models.Model):
 
     def save(self, *args, **kwargs):
         super(AlunoResposta, self).save(*args, **kwargs)
+        placar, created = Placar.objects.get_or_create(grupo=self.aluno.grupo)
         if self.pergunta.resposta == self.resposta:
-            placar, created = Placar.objects.get_or_create(grupo=self.aluno.grupo)
             placar.acerto()
+
+    class Meta(object):
+        unique_together = ('aluno', 'pergunta')

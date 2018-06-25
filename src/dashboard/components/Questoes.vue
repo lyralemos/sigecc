@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <section>
     <h1>Questões</h1>
 
     <table class="table table-bordered">
@@ -13,6 +13,7 @@
         <td>{{ questao.texto }}</td>
         <td>
           <span v-for="pergunta in questao.pergunta_set">
+            {{ pergunta.titulo }}<br />
             Respostas:
             <ul>
               <li>a) {{ pergunta.opcao1 }}</li>
@@ -26,7 +27,7 @@
         </td>
       </tr>
     </table>
-  </div>
+  </section>
 </template>
 
 <script>

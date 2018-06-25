@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand mx-auto" href="#">Dashboard - SiGECC</a>
-    </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <Menu></Menu>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-          <router-view></router-view>
-        </main>
-      </div>
+    <div class="content">
+      <Menu></Menu>
+      <main role="main">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand mx-auto" href="#">SiGECC</a>
+        </nav>
+        <router-view></router-view>
+      </main>
     </div>
     <div class="loading mx-auto" v-if="$global.loading===true">
       <i class="fas fa-spinner fa-spin"></i> Carregando
@@ -32,10 +30,19 @@ html, body{height: 100%}
 
 body{
     position: relative;
+    background-color: #f7f7f7;
+}
+
+section{
+  padding: 0 30px;
+}
+
+.navbar{
+  background-color: #3a393a;
 }
 
 [role="main"] {
-    padding-top: 56px;
+    margin-left: 180px
 }
 
 .loading{
@@ -47,10 +54,5 @@ body{
     background-color: #ccc;
     border: 1px solid #ddd;
     padding: 2px 5px;
-}
-
-.destaque{
-    font-size: 30px;
-    padding-left: 35px;
 }
 </style>

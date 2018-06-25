@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import render
+
+def dashboard(request):
+    return render(request, template_name="dashboard.html")
+
+def mobile(request):
+    return render(request, template_name="mobile.html")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dashboard/', include('apps.dashboard.urls')),
+    path('dashboard/', dashboard, name="dashboard"),
     path('api/', include('apps.core.urls')),
+    path('', mobile, name='mobile')
 ]
