@@ -27,7 +27,28 @@
 
 <script>
   export default {
-    name: 'App'
+    name: 'App',
+    updated () {
+      if (this.$global.liberado && !localStorage.getItem('user-token')) {
+        this.$router.push('/login')
+      }
+    },
+    mounted () {
+      this.start()
+    },
+    methods: {
+      start: function () {
+        this.$http.get('/api/v1/modulos/ativo')
+          .then((response) => {
+            if (response.data.error) {
+              this.$router.push('/fechado')
+            }
+            this.$global.liberado = response.data.liberado
+            this.$global.competicao = response.data.competicao
+            this.$global.colaboracao = response.data.colaboracao
+          })
+      }
+    }
   }
 </script>
 
@@ -65,5 +86,19 @@
     left: 50%;
     margin-left: -32px;
     margin-top: -32px;
+  }
+
+  .errors{
+    background-color: #ff7675;
+    padding: 10px;
+    color: #fff;
+  }
+
+  .errors ul{
+    list-style-type: circle;
+  }
+  .errors li{
+    list-style-type: circle !important;
+    margin-left: 17px;
   }
 </style>

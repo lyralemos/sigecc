@@ -87,7 +87,7 @@
           </tr>
           <tr v-for="(placar, index) in modulo.placar">
             <td>{{ index+1 }}</td>
-            <td>{{ placar.grupo }}</td>
+            <td>{{ placar.grupo.__str__ }}</td>
             <td>{{ placar.pontos }}</td>
           </tr>
         </table>

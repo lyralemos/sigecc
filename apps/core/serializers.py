@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Aluno, PerfilResposta, PerfilPergunta, Modulo, Grupo, Placar,\
-    Questao, Pergunta, AlunoResposta
+    Questao, Pergunta, AlunoResposta, GrupoQuestao, GrupoQuestaoAluno
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'auth_token')
 
 
 class PerfilPerguntaSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class PerfilRespostaSerializer(serializers.ModelSerializer):
 
 
 class AlunoSerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
+    # user = UserSerializer(required=True)
     grupo = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta(object):
@@ -63,17 +63,14 @@ class ModuloSerializer(serializers.ModelSerializer):
         model = Modulo
         fields = '__all__'
 
-
-class GrupoSerializer(serializers.ModelSerializer):
-    aluno_set = AlunoSerializer(many=True)
-
+class SimpleGrupoSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Grupo
-        fields = '__all__'
+        fields = ('id','__str__')
 
 
 class PlacarSerializer(serializers.ModelSerializer):
-    grupo = serializers.StringRelatedField()
+    grupo = SimpleGrupoSerializer()
 
     class Meta(object):
         model = Placar
@@ -81,14 +78,50 @@ class PlacarSerializer(serializers.ModelSerializer):
 
 
 class PerguntaSerializer(serializers.ModelSerializer):
+
     class Meta(object):
         model = Pergunta
-        exclude = ('questao',)
+        exclude = ('questao', 'resposta')
+
+class GrupoQuestaoAlunoSerializer(serializers.ModelSerializer):
+    aluno = AlunoSerializer()
+    pergunta = PerguntaSerializer()
+
+    class Meta(object):
+        model = GrupoQuestaoAluno
+        fields = ('id', 'aluno', 'pergunta', 'resposta', 'correto')
+
+
+class GrupoQuestaoSerializer(serializers.ModelSerializer):
+    atribuicoes = GrupoQuestaoAlunoSerializer(many=True)
+
+    class Meta(object):
+        model = GrupoQuestao
+        fields = ('atribuicoes',)
 
 
 class QuestaoSerializer(serializers.ModelSerializer):
-    pergunta_set = PerguntaSerializer(required=True, many=True)
 
     class Meta(object):
         model = Questao
-        fields = ('id', 'texto', 'pergunta_set')
+        fields = ('id', 'texto')
+
+
+class GrupoSerializer(serializers.ModelSerializer):
+    aluno_set = serializers.StringRelatedField(many=True)
+    # questao = serializers.SerializerMethodField()
+    questao = QuestaoSerializer()
+
+    def get_questao(self, obj):
+        return obj.questao.pk
+
+    class Meta(object):
+        model = Grupo
+        fields = ('id', 'aluno_set', 'nome', 'modulo', 'questao')
+
+
+class AlunoRespostaSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = AlunoResposta
+        fields = ('aluno', 'pergunta', 'resposta', 'acertou')

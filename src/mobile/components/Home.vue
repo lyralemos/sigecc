@@ -1,7 +1,7 @@
 <template>
   <section class="center-align">
     <div class="inicio">
-      <router-link to="/perfil" class="btn waves-effect waves-light pulse">Começar</router-link>
+      <button @click="iniciar" class="btn waves-effect waves-light pulse">Começar</button>
     </div>
 
   </section>
@@ -9,7 +9,20 @@
 
 <script>
   export default {
-    name: 'Home'
+    name: 'Home',
+    methods: {
+      iniciar: function () {
+        if (!this.$global.liberado) {
+          if (localStorage.getItem('user-token')) {
+            this.$router.push('/espera')
+          } else {
+            this.$router.push('/perfil')
+          }
+        } else if (localStorage.getItem('user-token')) {
+          this.$router.push('/pergunta')
+        }
+      }
+    }
   }
 </script>
 

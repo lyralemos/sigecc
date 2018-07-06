@@ -116,6 +116,18 @@ export default {
       this.errors = []
       if (Object.keys(this.respostas).length !== 18) {
         this.errors.push('Responda todas as perguntas do perfil')
+      } else {
+        this.$http.post('/api/v1/alunos/', {
+          'cpf': this.cpf,
+          'nome': this.nome,
+          'nascimento': this.nascimento,
+          'genero': this.genero,
+          'respostas': this.respostas
+        }).then((response) => {
+          var token = response.data.user.auth_token
+          localStorage.setItem('user-token', token)
+          this.$router.push('/espera')
+        })
       }
       window.scrollTo(0, 0)
       e.preventDefault()
@@ -171,17 +183,4 @@ export default {
     margin-bottom: 20px;
   }
 
-  .errors{
-    background-color: #ff7675;
-    padding: 10px;
-    color: #fff;
-  }
-
-  .errors ul{
-    list-style-type: circle;
-  }
-  .errors li{
-    list-style-type: circle !important;
-    margin-left: 17px;
-  }
 </style>
