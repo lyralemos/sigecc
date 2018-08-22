@@ -23,7 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(4gryvk*gdj$5dor!wap)ap&411$c7pzs10=19(w5@r%r&e&2-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ENV = os.environ.get('APP_ENV', 'dev')
+if ENV == 'dev':
+    DEBUG = True
+    STATS_FILE = os.path.join(BASE_DIR, 'webpack-stats.json')
+else:
+    DEBUG = False
+    STATS_FILE = os.path.join(BASE_DIR, 'webpack-stats-prod.json')
 
 ALLOWED_HOSTS = ['*']
 
@@ -132,12 +138,14 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'public')
+
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'STATS_FILE': STATS_FILE,
     }
 }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

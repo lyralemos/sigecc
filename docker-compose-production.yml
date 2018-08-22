@@ -1,15 +1,21 @@
 version: '3'
 
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+  nginx-ssl-proxy:
+    build: ./nginx/
+    restart: always
+    environment:
+      UPSTREAM: web:8000
+      SERVERNAME: lyralemos.com.br
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./static:/static
-      - ./nginx:/etc/nginx/conf.d
+      - "/etc/letsencrypt"
+      - static:/code/public
     depends_on:
+      - web
+    links:
       - web
   db:
     image: postgres
@@ -17,15 +23,22 @@ services:
       - '127.0.0.1:5432:5432'
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+        test: exit 0
   web:
     build: .
-    command: gunicorn sigecc.wsgi:application -w 3 -b 0.0.0.0:8000 --reload --log-level=debug --access-logfile=- --log-file=-
-    volumes:
-      - .:/code
+    command: gunicorn sigecc.wsgi:application -w 3 -b 0.0.0.0:8000
+    environment:
+      - APP_ENV=production
     ports:
       - "8000:8000"
+    volumes:
+      - static:/code/public
     depends_on:
+      - db
+    links:
       - db
 
 volumes:
   pgdata:
+  static:
