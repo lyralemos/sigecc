@@ -9,6 +9,11 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+var STATS_FILENAME = './webpack-stats.json'
+if (process.env.NODE_ENV === 'production') {
+    STATS_FILENAME = './webpack-stats-prod.json'
+}
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -16,7 +21,7 @@ module.exports = {
     dashboard: './src/dashboard/main.js'
   },
   plugins: [
-    new BundleTracker({filename: './webpack-stats.json'}),
+    new BundleTracker({filename: STATS_FILENAME}),
   ],
   output: {
     path: config.build.assetsRoot,
