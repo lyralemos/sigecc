@@ -204,35 +204,23 @@ class GrupoQuestaoAluno(models.Model):
         return self.pergunta.resposta == self.resposta
 
 
-class AlunoResposta(models.Model):
+class PerguntaFlow(models.Model):
+    pergunta = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.pergunta
+
+
+class RespostaFlow(models.Model):
+    pergunta = models.ForeignKey(PerguntaFlow, on_delete=models.CASCADE)
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
-    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
-    resposta = models.CharField(max_length=6, choices=RESPOSTA_CHOICE)
+    resposta = models.IntegerField()
 
-    @property
-    def acertou(self):
-        return self.pergunta.resposta == self.resposta
-
-    def save(self, *args, **kwargs):
-        super(AlunoResposta, self).save(*args, **kwargs)
-        placar, created = Placar.objects.get_or_create(grupo=self.aluno.grupo)
-        if self.acertou:
-            placar.acerto()
-
-        questao = self.pergunta.questao
-        if questao.pergunta_set.count() == 1:
-            respondidas = AlunoResposta.objects.filter(aluno=self.aluno).values_list('pergunta',flat=True)
-            questoes = Pergunta.objects.exclude(pk__in=respondidas).values_list(flat=True).distinct()
-            count = len(questoes)
-            random_index = random.randint(0, count - 1)
-            questao = questoes[random_index]
-            gq = GrupoQuestao.objects.get(grupo = self.aluno.grupo)
-            gq.questao_id = questao
-            gq.save()
-
+    def __str__(self):
+        return self.pergunta.pergunta
 
     class Meta(object):
-        unique_together = ('aluno', 'pergunta')
+        unique_together = ("pergunta", "resposta", "aluno")
 
 
 # Gera os tokens para os usuários automaticamente

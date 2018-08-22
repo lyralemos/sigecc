@@ -17,8 +17,10 @@
             required>
           <label for="id_password">Senha</label>
         </div>
-
-        <button type="submit" class="btn">Entrar</button>
+        <div class="center-align">
+          <button type="submit" class="btn">Entrar</button> <br /><br />
+          <router-link to="/cadastro" v-if="$global.liberado == false">Cadastre-se</router-link>
+        </div>
       </div>
     </form>
   </section>

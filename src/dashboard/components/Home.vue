@@ -61,19 +61,12 @@
             </tr>
           </tbody>
         </table>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-cog"></i> Ações
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item"
-              href="#"
-              v-bind:class="{'disabled':modulo.liberado}"
-              v-on:click="liberar">Liberar questões</a>
-            <a class="dropdown-item"
-              v-bind:class="{'disabled':!modulo.liberado}">Finalizar</a>
-          </div>
-        </div>
+        <a href="#"
+          class="btn btn-primary"
+          v-bind:class="{'disabled':modulo.liberado}"
+          v-on:click="liberar">Liberar questões</a>
+        <a class="btn btn-secondary"
+          v-bind:class="{'disabled':!modulo.liberado}">Finalizar</a>
       </div>
       <div class="item">
         <div class="titulo">

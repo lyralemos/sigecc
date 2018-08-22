@@ -10,7 +10,8 @@ const global = new Vue({
     loading: false,
     competicao: false,
     colaboracao: false,
-    liberado: false
+    liberado: false,
+    grupo: null
   }
 })
 

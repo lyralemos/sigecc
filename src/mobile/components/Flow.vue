@@ -8,9 +8,9 @@
           <li v-for="error in errors">{{ error }}</li>
         </ul>
       </p>
+
       <h5>
-        Responda as perguntas abaixo utilizando considerando se concorda
-        ou não com as afirmações.
+        Responda as perguntas abaixo de acordo com a sua experiência durante a aula.
       </h5>
       <div class="pergunta" v-for="pergunta in perguntas">
         <div class="enunciado">{{ pergunta.pergunta }}</div>
@@ -18,7 +18,7 @@
         <div class="escala">
           <span>Discordo</span>
           <span></span>
-          <span>Neutro</span>
+          <span style="text-align:center">Neutro</span>
           <span></span>
           <span>Concordo</span>
         </div>
@@ -70,7 +70,7 @@
 import isLoggedMixin from '../loggedin'
 
 export default {
-  name: 'Perfil',
+  name: 'Flow',
   mixins: [isLoggedMixin],
   data: function () {
     return {
@@ -81,26 +81,23 @@ export default {
   },
   methods: {
     getPerguntas: function () {
-      this.$http.get('/api/v1/perguntas_perfil/')
+      this.$http.get('/api/v1/perguntas_flow/')
         .then((response) => {
           this.perguntas = response.data
         })
     },
     checkForm: function (e) {
       this.errors = []
-      if (Object.keys(this.respostas).length !== 18) {
-        this.errors.push('Responda todas as perguntas do perfil')
+      if (Object.keys(this.respostas).length !== 36) {
+        this.errors.push('Responda todas as perguntas da avaliação')
       } else {
-        this.$http.post('/api/v1/alunos/perfil/', {
-          'cpf': this.cpf,
-          'nome': this.nome,
-          'nascimento': this.nascimento,
-          'genero': this.genero,
+        this.$http.post('/api/v1/alunos/flow/', {
           'respostas': this.respostas
         }).then((response) => {
-          // verificar se já existem respostas
-          localStorage.setItem('perfil', true)
-          this.$router.push('/espera')
+          if (response.data.result === true) {
+            localStorage.setItem('flow', true)
+            this.$router.push('/final')
+          }
         })
       }
       window.scrollTo(0, 0)
@@ -114,7 +111,11 @@ export default {
     }
   },
   mounted: function () {
-    this.getPerguntas()
+    if (localStorage.getItem('flow')) {
+      this.$router.push('/final')
+    } else {
+      this.getPerguntas()
+    }
   }
 }
 </script>
@@ -136,7 +137,7 @@ export default {
     width: 20%;
   }
   .respostas button{
-    width: 60px;
+    width: 90%;
     border: 3px solid #ccc;
     padding: 10px 0;
     border-radius: 38px;
@@ -150,7 +151,9 @@ export default {
   .escala span{
     width: 50%;
     font-weight: 600;
-    text-align: center;
+  }
+  .escala span+span{
+    text-align: right;
   }
   .divider{
     margin-top:15px

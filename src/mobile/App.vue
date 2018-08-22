@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="header">
+      <img src="@/assets/logo-silver.png" alt="Logo">
+      <h5 class="titulo">Sistema Experimental</h5>
+    </div>
+    <div class="container main">
       <div class="col s12">
-        <div class="header center-align">
-          <img src="@/assets/logo-silver.png" alt="Logo">
-          <h5 class="titulo">Sistema Experimental</h5>
-        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -29,9 +29,9 @@
   export default {
     name: 'App',
     updated () {
-      if (this.$global.liberado && !localStorage.getItem('user-token')) {
-        this.$router.push('/login')
-      }
+      // if (!localStorage.getItem('user-token')) {
+      //   this.$router.push('/login')
+      // }
     },
     mounted () {
       this.start()
@@ -55,18 +55,45 @@
 <style>
   html, body, #app{height: 100%}
 
-  .titulo{
-    font-family: 'Dosis', sans-serif;
-  }
-
   #app > .container,
-  #app > .container > .col,
-  #app > .container > .col > section{
+  #app > .container > .col{
     height: 100%;
   }
 
+  #app{
+    position: relative;
+  }
+
   .header{
-    padding: 20px 0;
+    padding: 10px 0;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+  }
+
+  .titulo{
+    font-family: 'Dosis', sans-serif;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
+  .header img{
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
+  .main{
+    padding-top: 80px;
+  }
+
+  .competicao{
+    height: calc(100%  - 90px) !important;
+    overflow-y: auto;
   }
 
   .loading{

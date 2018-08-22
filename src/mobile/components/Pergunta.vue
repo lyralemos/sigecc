@@ -74,37 +74,21 @@
         <button type="button" class="btn" v-if="perguntas.length == 1" @click="getQuestao">Próxima Pergunta</button>
       </div>
     </div>
-    <div class="placar" v-if="$global.competicao">
-      <div class="acao">
-        <i class="material-icons arrow up" @click="mostraPlacar">keyboard_arrow_up</i>
-        <i class="material-icons arrow down" @click="mostraPlacar">keyboard_arrow_down</i>
-      </div>
-      <ul>
-        <li v-for="(p, index) in placar" v-bind:class="{ selected: p.grupo.id == grupo }">
-          <a>
-            <i class="material-icons person">person_pin</i>
-            <div class="info">
-              <span class="posicao">{{ index+1 }}º</span>
-              <div class="dados">
-                <b>Colocado</b><br>
-                <span class="nome">{{ p.grupo.__str__ }}</span>
-                <i class="material-icons star" v-if="p.grupo.id == grupo">star</i>
-              </div>
-            </div>
-          </a>
-        </li>
-      </ul>
-    </div>
+    <Placar v:if="$global.competicao == true"></Placar>
   </section>
 </template>
 
 <script>
+  import isLoggedMixin from '../loggedin'
+  import Placar from './Placar'
+
   export default {
     name: 'Pergunta',
+    mixins: [isLoggedMixin],
+    components: {Placar},
     data: function () {
       return {
         aluno: null,
-        grupo: null,
         questao: null,
         perguntas: null,
         escolhida: null,
@@ -113,14 +97,12 @@
         resultado: null,
         acerto: null,
         status: null,
-        intervalo: null,
-        placar: null
+        intervalo: null
       }
     },
     methods: {
       resetData: function () {
         this.aluno = null
-        this.grupo = null
         this.questao = null
         this.perguntas = null
         this.escolhida = null
@@ -135,7 +117,7 @@
         this.$http.get('/api/v1/grupos/perguntas/')
           .then((response) => {
             this.aluno = response.data.aluno
-            this.grupo = response.data.grupo
+            this.$global.grupo = response.data.grupo
             this.questao = response.data.questao
             this.perguntas = response.data.perguntas
 
@@ -204,24 +186,6 @@
           .catch((err) => {
             console.log(err)
           })
-      },
-      getPlacar: function () {
-        if (this.$global.competicao) {
-          this.$http.get('/api/v1/placar/', { headers: {'X-No-Loading': 'true'} })
-          .then((response) => {
-            this.placar = response.data
-            setTimeout(function () {
-              this.getPlacar()
-            }.bind(this), 10000)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        }
-      },
-      mostraPlacar: function () {
-        var placar = document.querySelector('.placar')
-        placar.classList.toggle('mostrar')
       }
     },
     mounted () {
@@ -229,7 +193,6 @@
         this.$router.push('/')
       }
       this.getQuestao()
-      this.getPlacar()
     }
   }
 </script>
@@ -252,7 +215,7 @@
 
   .resultado span{
     width: 200px;
-    transform: translateX(50%);
+    margin: auto;
     border: 1px solid #ddd;
     display: block;
     border-radius: 100px;
@@ -287,94 +250,6 @@
 
   button{
     width: 100%;
-  }
-
-  .placar{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #d8d8d8;
-    padding: 0 20px;
-    transition: all .2s ease;
-    top: 82%;
-  }
-
-  .placar .acao{
-    text-align: center;
-  }
-
-  .placar.mostrar{
-    top:120px;
-  }
-
-  .placar .down{
-    display:none;
-  }
-
-  .placar ul{
-    margin-top:0;
-  }
-
-  .placar.mostrar li{
-    display: block !important;
-  }
-
-  .placar.mostrar .down{
-    display: inline-block;
-  }
-
-  .placar.mostrar .up{
-    display: none;
-  }
-
-  .placar li{
-    display: none;
-    margin-bottom: 15px;
-    position: relative;
-  }
-
-  .placar li.selected{
-    display: block;
-  }
-
-  .placar i.arrow{
-    color:#555;
-    text-align: center;
-    font-size: 34px;
-  }
-
-  .placar i.person{
-    font-size: 4em;
-    margin-right: 10px;
-  }
-
-  .placar i.star{
-    position: absolute;
-    right: 10px;
-    top:50%;
-    transform: translateY(-50%);
-  }
-
-  .placar a{
-    color:#333;
-    display: table;
-    width: 100%;
-  }
-
-  .placar .info{
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-  }
-
-  .placar .posicao{
-    font-size: 40px;
-    margin-right: 5px;
-  }
-
-  .placar .dados{
-    display: inline-block;
   }
 
 

@@ -9,10 +9,11 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from .models import Aluno, Modulo, PerfilPergunta, PerfilResposta, Grupo, \
-    Placar, Questao, AlunoResposta, GrupoQuestao, Pergunta, GrupoQuestaoAluno
+    Placar, Questao, GrupoQuestao, Pergunta, GrupoQuestaoAluno, PerguntaFlow, \
+    RespostaFlow
 from .serializers import AlunoSerializer, ModuloSerializer, \
     PerfilPerguntaSerializer, GrupoSerializer, PlacarSerializer, \
-    QuestaoSerializer, AlunoRespostaSerializer, GrupoQuestaoAlunoSerializer
+    QuestaoSerializer, GrupoQuestaoAlunoSerializer, PerguntaFlowSerializer
 
 class AlunoViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -21,10 +22,7 @@ class AlunoViewSet(viewsets.ModelViewSet):
     serializer_class = AlunoSerializer
 
     def create(self, request):
-        user = User.objects.create(
-            username = request.data['cpf'],
-            password = request.data['cpf']
-        )
+        user = User.objects.create_user(request.data['cpf'],'fake@email.com',request.data['cpf'])
         aluno = Aluno.objects.create(
             nome = request.data['nome'],
             nascimento = request.data['nascimento'],
@@ -32,15 +30,31 @@ class AlunoViewSet(viewsets.ModelViewSet):
             user = user,
             modulo = Modulo.objects.get(ativo=True)
         )
+
+        return Response({'token':user.auth_token.key})
+
+    @action(methods=['post'], detail=False)
+    def perfil(self, request):
+        aluno = request.user.aluno
         for pergunta,resposta in request.data['respostas'].items():
             PerfilResposta.objects.create(
                 aluno = aluno,
                 pergunta = PerfilPergunta.objects.get(pk=pergunta),
                 resposta = resposta
             )
+        return Response({'result':True})
 
-        serializer = self.get_serializer(aluno)
-        return Response(serializer.data)
+    @action(methods=['post'], detail=False)
+    def flow(self, request):
+        aluno = request.user.aluno
+        for pergunta,resposta in request.data['respostas'].items():
+            RespostaFlow.objects.create(
+                aluno = aluno,
+                pergunta_id = pergunta,
+                resposta = resposta
+            )
+        return Response({'result':True})
+
 
 
 class ModuloViewSet(viewsets.ModelViewSet):
@@ -127,16 +141,6 @@ class QuestaoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class AlunoRespostaViewSet(viewsets.ModelViewSet):
-    queryset = AlunoResposta.objects.all()
-    serializer_class = AlunoRespostaSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def create(self, request):
-        resposta = AlunoResposta.objects.create(
-            aluno = self.request.user.aluno,
-            pergunta = Pergunta.objects.get(pk=self.request.data['pergunta']),
-            resposta = self.request.data['resposta']
-        )
-        serializer = self.get_serializer(resposta)
-        return Response(serializer.data)
+class PerguntaFlowViewSet(viewsets.ModelViewSet):
+    queryset = PerguntaFlow.objects.all()
+    serializer_class = PerguntaFlowSerializer

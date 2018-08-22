@@ -1,14 +1,18 @@
 <template lang="html">
   <section>
     <div class="espera">
-      Aguardando a liberação do sistema
+      <span class="tempo material-icons">access_time</span>
+      <h5>Aguardando a liberação do próximo módulo.</h5>
     </div>
   </section>
 </template>
 
 <script>
+import isLoggedMixin from '../loggedin'
+
 export default {
   name: 'Espera',
+  mixins: [isLoggedMixin],
   data: function () {
     return {
       interval: null
@@ -35,7 +39,7 @@ export default {
     this.isLiberado()
     this.interval = setInterval(function () {
       this.isLiberado()
-    }.bind(this), 3000)
+    }.bind(this), 5000)
   }
 }
 </script>
@@ -45,5 +49,9 @@ export default {
   .espera{
     text-align: center;
     padding: 20px 0;
+  }
+
+  .tempo{
+    font-size: 100px;
   }
 </style>

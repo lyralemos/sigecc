@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Aluno, PerfilResposta, PerfilPergunta, Modulo, Grupo, Placar,\
-    Questao, Pergunta, AlunoResposta, GrupoQuestao, GrupoQuestaoAluno
+    Questao, Pergunta, GrupoQuestao, GrupoQuestaoAluno, PerguntaFlow, RespostaFlow
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -52,9 +52,9 @@ class ModuloSerializer(serializers.ModelSerializer):
         return obj.questao_set.count()
 
     def get_respostas_count(self, obj):
-        return AlunoResposta.objects.filter(
-            pergunta__questao__modulos__pk=obj.pk
-        ).count()
+        return GrupoQuestaoAluno.objects.filter(
+            grupo_questao__grupo__modulo = obj
+        ).exclude(resposta="").count()
 
     def get_placar(self, obj):
         return PlacarSerializer(Placar.objects.filter(grupo__modulo__ativo=True), many=True).data
@@ -109,7 +109,6 @@ class QuestaoSerializer(serializers.ModelSerializer):
 
 class GrupoSerializer(serializers.ModelSerializer):
     aluno_set = serializers.StringRelatedField(many=True)
-    # questao = serializers.SerializerMethodField()
     questao = QuestaoSerializer()
 
     def get_questao(self, obj):
@@ -120,8 +119,15 @@ class GrupoSerializer(serializers.ModelSerializer):
         fields = ('id', 'aluno_set', 'nome', 'modulo', 'questao')
 
 
-class AlunoRespostaSerializer(serializers.ModelSerializer):
+class PerguntaFlowSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = PerguntaFlow
+        fields = "__all__"
+
+
+class RespostaFlowSerializer(serializers.ModelSerializer):
+    pergunta = serializers.StringRelatedField()
 
     class Meta(object):
-        model = AlunoResposta
-        fields = ('aluno', 'pergunta', 'resposta', 'acertou')
+        model = RespostaFlow
+        fields = "__all__"
