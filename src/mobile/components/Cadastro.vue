@@ -67,9 +67,7 @@
       }
     },
     mounted: function () {
-      document.addEventListener('DOMContentLoaded', function () {
-        M.FormSelect.init(document.querySelectorAll('select'))
-      })
+      M.FormSelect.init(document.querySelectorAll('select'))
     },
     methods: {
       checkForm: function (e) {
