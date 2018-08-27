@@ -13,11 +13,9 @@
 </template>
 
 <script>
-  import isLoggedMixin from '../loggedin'
 
   export default {
     name: 'Home',
-    mixins: [isLoggedMixin],
     methods: {
       iniciar: function () {
         if (localStorage.getItem('perfil')) {

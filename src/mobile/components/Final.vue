@@ -5,9 +5,9 @@
     </div>
     <div class="obrigado">
       <h5>Obrigado por participar!</h5>
-      <h6 v:if="$global.competicao == true">Confira abaixo a sua posição no ranking</h6>
+      <h6 v-if="$global.competicao == true">Confira abaixo a sua posição no ranking</h6>
     </div>
-    <Placar v:if="$global.competicao == true"></Placar>
+    <Placar v-if="$global.competicao == true"></Placar>
   </section>
 </template>
 

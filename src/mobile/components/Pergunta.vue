@@ -74,7 +74,7 @@
         <button type="button" class="btn" v-if="perguntas.length == 1" @click="getQuestao">Próxima Pergunta</button>
       </div>
     </div>
-    <Placar v:if="$global.competicao == true"></Placar>
+    <Placar v-if="$global.competicao == true"></Placar>
   </section>
 </template>
 
