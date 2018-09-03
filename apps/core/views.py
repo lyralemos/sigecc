@@ -81,8 +81,13 @@ class ModuloViewSet(viewsets.ModelViewSet):
 
 
 class PerfilPerguntaViewSet(viewsets.ModelViewSet):
-    queryset = PerfilPergunta.objects.all()
+    # queryset = PerfilPergunta.objects.all()
     serializer_class = PerfilPerguntaSerializer
+
+    def get_queryset(self):
+        respondidas = PerfilResposta.objects.filter(aluno__user=self.request.user).values_list('pergunta',flat=True)
+        print(list(respondidas))
+        return PerfilPergunta.objects.exclude(id__in=list(respondidas))
 
 
 class GrupoViewSet(viewsets.ModelViewSet):

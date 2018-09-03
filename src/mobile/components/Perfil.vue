@@ -84,6 +84,10 @@ export default {
       this.$http.get('/api/v1/perguntas_perfil/')
         .then((response) => {
           this.perguntas = response.data
+          if (!this.perguntas.length) {
+            localStorage.setItem('perfil', true)
+            this.$router.push('/espera')
+          }
         })
     },
     checkForm: function (e) {
@@ -98,7 +102,6 @@ export default {
           'genero': this.genero,
           'respostas': this.respostas
         }).then((response) => {
-          // verificar se já existem respostas
           localStorage.setItem('perfil', true)
           this.$router.push('/espera')
         })

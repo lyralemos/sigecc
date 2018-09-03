@@ -12,7 +12,7 @@ router.register(r'modulos', ModuloViewSet)
 router.register(r'grupos', GrupoViewSet)
 router.register(r'placar', PlacarViewSet)
 router.register(r'questoes', QuestaoViewSet)
-router.register(r'perguntas_perfil', PerfilPerguntaViewSet)
+router.register(r'perguntas_perfil', PerfilPerguntaViewSet, 'perguntas-perfil')
 router.register(r'perguntas_flow', PerguntaFlowViewSet)
 
 
