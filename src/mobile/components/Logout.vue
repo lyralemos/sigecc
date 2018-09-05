@@ -9,8 +9,9 @@
     name: 'Logout',
     methods: {
       logout: function () {
-        console.log('asdasd')
         localStorage.removeItem('user-token')
+        localStorage.removeItem('status')
+        localStorage.removeItem('resolvidos')
         this.$router.push('/')
       }
     },

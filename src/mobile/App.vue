@@ -13,7 +13,9 @@
 
       <a class="rocket" v-on:click="showPopup">
         <img src="@/assets/rocket.svg" alt="Missões">
-        <span class="dot">{{ $global.desafios.length - $global.resolvidos.length }}</span>
+        <span class="dot" v-if="$global.desafios">
+          {{ $global.desafios.length - $global.resolvidos.length }}
+        </span>
       </a>
     </div>
     <div class="container main">

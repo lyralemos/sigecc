@@ -1,0 +1,42 @@
+[
+    {
+        "model":"core.desafio",
+        "pk":1,
+        "fields":{
+            "nome":"Conseguir o primeiro acerto",
+            "pontos":3
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":2,
+        "fields":{
+            "nome":"Conseguir 3 acertos em sequ\u00eancia",
+            "pontos":5
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":3,
+        "fields":{
+            "nome":"Conseguir 5 acertos",
+            "pontos":7
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":4,
+        "fields":{
+            "nome":"Terminar todas as quest\u00f5es",
+            "pontos":10
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":5,
+        "fields":{
+            "nome":"Responder o question\u00e1rio final",
+            "pontos":15
+        }
+    }
+]

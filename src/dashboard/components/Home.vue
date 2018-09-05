@@ -59,14 +59,21 @@
                 <Check :bool="modulo.liberado"></Check>
               </td>
             </tr>
+            <tr>
+              <td>Finalizado</td>
+              <td style="text-align:center">
+                <Check :bool="modulo.finalizado"></Check>
+              </td>
+            </tr>
           </tbody>
         </table>
         <a href="#"
           class="btn btn-primary"
           v-bind:class="{'disabled':modulo.liberado}"
-          v-on:click="liberar">Liberar questões</a>
+          v-on:click="liberar">Liberar</a>
         <a class="btn btn-secondary"
-          v-bind:class="{'disabled':!modulo.liberado}">Finalizar</a>
+          v-bind:class="{'disabled':!modulo.liberado}"
+          v-on:click="finalizar">Finalizar</a>
       </div>
       <div class="item">
         <div class="titulo">
@@ -121,6 +128,22 @@ export default {
         if (c) {
           this.$global.loading = true
           this.$http.get('/api/v1/modulos/liberar/')
+            .then((response) => {
+              this.$global.loading = false
+            })
+            .catch((err) => {
+              this.$global.loading = false
+              console.log(err)
+            })
+        }
+      }
+    },
+    finalizar: function () {
+      if (this.modulo.liberado) {
+        var c = confirm('Deseja finalizar o módulo?')
+        if (c) {
+          this.$global.loading = true
+          this.$http.get('/api/v1/modulos/finalizar/')
             .then((response) => {
               this.$global.loading = false
             })

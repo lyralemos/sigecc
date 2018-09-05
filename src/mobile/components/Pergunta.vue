@@ -187,6 +187,11 @@
           })
           .catch((err) => {
             console.log(err)
+            // se der erro aqui é porque não tem mais perguntas
+            // redirecionando para flow
+            clearInterval(this.intervalo)
+            localStorage.setItem('status', '/flow')
+            this.$router.push('/flow')
           })
       }
     },

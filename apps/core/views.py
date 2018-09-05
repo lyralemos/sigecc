@@ -81,6 +81,12 @@ class ModuloViewSet(viewsets.ModelViewSet):
         modulo.liberar()
         return Response({'result':'success'})
 
+    @action(methods=['get'], detail=False)
+    def finalizar(self, request):
+        modulo = Modulo.objects.get(ativo=True)
+        modulo.finalizar()
+        return Response({'result': 'success'})
+
 
 class PerfilPerguntaViewSet(viewsets.ModelViewSet):
     # queryset = PerfilPergunta.objects.all()
@@ -88,7 +94,6 @@ class PerfilPerguntaViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         respondidas = PerfilResposta.objects.filter(aluno__user=self.request.user).values_list('pergunta',flat=True)
-        print(list(respondidas))
         return PerfilPergunta.objects.exclude(id__in=list(respondidas))
 
 

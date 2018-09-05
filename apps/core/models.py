@@ -29,6 +29,7 @@ class Modulo(models.Model):
     competicao = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
     liberado = models.BooleanField(default=False)
+    finalizado = models.BooleanField(default=False)
 
     def liberar(self):
         if self.ativo:
@@ -42,6 +43,10 @@ class Modulo(models.Model):
                 grupo.atribuir()
             self.liberado = True;
             self.save()
+
+    def finalizar(self):
+        self.finalizado = True
+        self.save()
 
     def save(self, *args, **kwargs):
         if self.ativo:
@@ -117,18 +122,20 @@ class Grupo(models.Model):
 
         GrupoQuestao.objects.filter(grupo=self).update(ativo=False)
 
-        respondidas = self.questoes.values_list('pk', flat=True)
-        disponiveis = Questao.objects.filter(modulos=self.modulo).exclude(id__in=respondidas)
-        count = len(disponiveis)
-        try:
-            random_index = random.randint(0, count - 1)
-            grupo_questao = GrupoQuestao.objects.create(
-                grupo = self,
-                questao = disponiveis[random_index],
-                ativo = True
-            )
-        except ValueError:
-            pass
+        # Só sorteia se o modulo não estiver finalizado
+        if not self.modulo.finalizado:
+            respondidas = self.questoes.values_list('pk', flat=True)
+            disponiveis = Questao.objects.filter(modulos=self.modulo).exclude(id__in=respondidas)
+            count = len(disponiveis)
+            try:
+                random_index = random.randint(0, count - 1)
+                grupo_questao = GrupoQuestao.objects.create(
+                    grupo = self,
+                    questao = disponiveis[random_index],
+                    ativo = True
+                )
+            except ValueError:
+                pass
 
     def acertou(self):
         self.respondidas += 1
@@ -309,7 +316,7 @@ def verifica_respostas(sender, instance=None, created=False, **kwargs):
         DesafioGrupo.objects.create(grupo=grupo,desafio_id=3)
 
     #todas as questoes
-    total_questoes = Questao.objects.count()
+    total_questoes = Questao.objects.filter(modulos__id=grupo.modulo_id).count()
     if grupo.respondidas == total_questoes:
         DesafioGrupo.objects.create(grupo=grupo,desafio_id=4)
 

@@ -10,6 +10,7 @@ import Flow from '@/mobile/components/Flow.vue'
 import Login from '@/mobile/components/Login.vue'
 import Logout from '@/mobile/components/Logout.vue'
 import Final from '@/mobile/components/Final.vue'
+import Fechado from '@/mobile/components/Fechado.vue'
 
 Vue.use(Router)
 Vue.use(Resource)
@@ -77,6 +78,11 @@ export default new Router({
       path: '/final',
       name: 'Final',
       component: Final
+    },
+    {
+      path: '/fechado',
+      name: 'Fechado',
+      component: Fechado
     }
   ]
 })
