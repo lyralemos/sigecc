@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Aluno, PerfilResposta, PerfilPergunta, Modulo, Grupo, Placar,\
-    Questao, Pergunta, GrupoQuestao, GrupoQuestaoAluno, PerguntaFlow, RespostaFlow
+    Questao, Pergunta, GrupoQuestao, GrupoQuestaoAluno, PerguntaFlow, RespostaFlow, \
+    Desafio, DesafioGrupo
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,6 +42,7 @@ class ModuloSerializer(serializers.ModelSerializer):
     grupos_count = serializers.SerializerMethodField()
     respostas_count = serializers.SerializerMethodField()
     placar = serializers.SerializerMethodField()
+    desafios = serializers.SerializerMethodField()
 
     def get_alunos_count(self, obj):
         return obj.aluno_set.count()
@@ -59,6 +61,9 @@ class ModuloSerializer(serializers.ModelSerializer):
     def get_placar(self, obj):
         return PlacarSerializer(Placar.objects.filter(grupo__modulo__ativo=True), many=True).data
 
+    def get_desafios(self, obj):
+        return DesafioSerializer(Desafio.objects.all(), many=True).data
+
     class Meta(object):
         model = Modulo
         fields = '__all__'
@@ -71,6 +76,14 @@ class SimpleGrupoSerializer(serializers.ModelSerializer):
 
 class PlacarSerializer(serializers.ModelSerializer):
     grupo = SimpleGrupoSerializer()
+    marcar = serializers.SerializerMethodField()
+
+    def get_marcar(self, obj):
+        request = self.context.get('request')
+        if request:
+            if obj.grupo == request.user.aluno.grupo:
+                return True
+        return False
 
     class Meta(object):
         model = Placar
@@ -131,3 +144,9 @@ class RespostaFlowSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = RespostaFlow
         fields = "__all__"
+
+
+class DesafioSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = Desafio
+        fields = '__all__'

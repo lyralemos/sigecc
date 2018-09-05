@@ -4,7 +4,8 @@ from rest_framework import routers
 from rest_framework.authtoken import views
 
 from .views import AlunoViewSet, ModuloViewSet, PerfilPerguntaViewSet, \
-    GrupoViewSet, PlacarViewSet, QuestaoViewSet, PerguntaFlowViewSet
+    GrupoViewSet, PlacarViewSet, QuestaoViewSet, PerguntaFlowViewSet, \
+    DesafioViewSet
 
 router = routers.DefaultRouter()
 router.register(r'alunos', AlunoViewSet)
@@ -14,6 +15,7 @@ router.register(r'placar', PlacarViewSet)
 router.register(r'questoes', QuestaoViewSet)
 router.register(r'perguntas_perfil', PerfilPerguntaViewSet, 'perguntas-perfil')
 router.register(r'perguntas_flow', PerguntaFlowViewSet)
+router.register(r'desafio', DesafioViewSet)
 
 
 urlpatterns = [

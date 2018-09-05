@@ -24,6 +24,7 @@ export default {
         .then((response) => {
           if (response.data.liberado) {
             this.$global.liberado = response.data.liberado
+            localStorage.setItem('status', '/pergunta')
             this.$router.push('/pergunta')
           }
         })

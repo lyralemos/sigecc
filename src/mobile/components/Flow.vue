@@ -95,7 +95,7 @@ export default {
           'respostas': this.respostas
         }).then((response) => {
           if (response.data.result === true) {
-            localStorage.setItem('flow', true)
+            localStorage.setItem('status', '/final')
             this.$router.push('/final')
           }
         })
@@ -116,6 +116,7 @@ export default {
     } else {
       this.getPerguntas()
     }
+    this.updateDesafios()
   }
 }
 </script>

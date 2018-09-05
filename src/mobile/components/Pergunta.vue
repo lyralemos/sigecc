@@ -122,12 +122,15 @@
             this.perguntas = response.data.perguntas
 
             if (!this.questao.texto) {
+              localStorage.setItem('status', '/flow')
               this.$router.push('/flow')
             }
 
             if (this.perguntas.length === 1) {
               this.setEscolhida()
             }
+
+            this.updateDesafios()
           })
           .catch((err) => {
             console.log(err)
@@ -163,7 +166,6 @@
             if (this.perguntas.length > 1) {
               this.startInterval()
             }
-            this.getPlacar()
           }).catch((err) => {
             console.log(err)
           })

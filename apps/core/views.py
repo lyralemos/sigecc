@@ -10,10 +10,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from .models import Aluno, Modulo, PerfilPergunta, PerfilResposta, Grupo, \
     Placar, Questao, GrupoQuestao, Pergunta, GrupoQuestaoAluno, PerguntaFlow, \
-    RespostaFlow
+    RespostaFlow, Desafio, DesafioGrupo
 from .serializers import AlunoSerializer, ModuloSerializer, \
     PerfilPerguntaSerializer, GrupoSerializer, PlacarSerializer, \
-    QuestaoSerializer, GrupoQuestaoAlunoSerializer, PerguntaFlowSerializer
+    QuestaoSerializer, GrupoQuestaoAlunoSerializer, PerguntaFlowSerializer, \
+    DesafioSerializer
 
 class AlunoViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -53,6 +54,7 @@ class AlunoViewSet(viewsets.ModelViewSet):
                 pergunta_id = pergunta,
                 resposta = resposta
             )
+        DesafioGrupo.objects.create(grupo=aluno.grupo, desafio_id=5)
         return Response({'result':True})
 
 
@@ -149,3 +151,13 @@ class QuestaoViewSet(viewsets.ModelViewSet):
 class PerguntaFlowViewSet(viewsets.ModelViewSet):
     queryset = PerguntaFlow.objects.all()
     serializer_class = PerguntaFlowSerializer
+
+
+class DesafioViewSet(viewsets.ModelViewSet):
+    queryset = Desafio.objects.all()
+    serializer_class = DesafioSerializer
+
+    @action(methods=['get'], detail=False)
+    def grupo(self, request):
+        desafios = DesafioGrupo.objects.filter(grupo=request.user.aluno.grupo).values_list('desafio_id', flat=True)
+        return Response({'desafios': desafios})

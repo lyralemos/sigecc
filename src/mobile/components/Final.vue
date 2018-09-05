@@ -18,7 +18,10 @@
   export default {
     name: 'Final',
     mixins: [isLoggedMixin],
-    components: { Placar }
+    components: { Placar },
+    mounted () {
+      this.updateDesafios()
+    }
   }
 </script>
 

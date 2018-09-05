@@ -5,15 +5,15 @@
       <i class="material-icons arrow down" @click="mostraPlacar">keyboard_arrow_down</i>
     </div>
     <ul>
-      <li v-for="(p, index) in placar" v-bind:class="{ selected: p.grupo.id == $global.grupo }">
+      <li v-for="(p, index) in placar" v-bind:class="{ selected: p.marcar }">
         <a>
           <i class="material-icons person">person_pin</i>
           <div class="info">
             <span class="posicao">{{ index+1 }}º</span>
             <div class="dados">
-              <b>Colocado</b><br>
+              <b>Colocado</b> ({{p.pontos}} pts) <br>
               <span class="nome">{{ p.grupo.__str__ }}</span>
-              <i class="material-icons star" v-if="p.grupo.id == $global.grupo">star</i>
+              <i class="material-icons star" v-if="p.marcar">star</i>
             </div>
           </div>
         </a>

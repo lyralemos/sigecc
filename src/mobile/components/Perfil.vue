@@ -85,7 +85,7 @@ export default {
         .then((response) => {
           this.perguntas = response.data
           if (!this.perguntas.length) {
-            localStorage.setItem('perfil', true)
+            localStorage.setItem('status', '/espera')
             this.$router.push('/espera')
           }
         })
@@ -102,7 +102,7 @@ export default {
           'genero': this.genero,
           'respostas': this.respostas
         }).then((response) => {
-          localStorage.setItem('perfil', true)
+          localStorage.setItem('status', '/espera')
           this.$router.push('/espera')
         })
       }

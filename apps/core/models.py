@@ -95,6 +95,9 @@ class Grupo(models.Model):
     nome = models.CharField(max_length=100, blank=True)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
     questoes = models.ManyToManyField('Questao', through='GrupoQuestao')
+    respondidas = models.IntegerField(default=0)
+    acertos = models.IntegerField(default=0)
+    sequencia = models.IntegerField(default=0)
 
     @property
     def questao(self):
@@ -126,6 +129,18 @@ class Grupo(models.Model):
             )
         except ValueError:
             pass
+
+    def acertou(self):
+        self.respondidas += 1
+        self.acertos += 1
+        self.sequencia += 1
+        self.save()
+
+    def errou(self):
+        self.respondidas += 1
+        self.sequencia = 0
+        self.save()
+
 
     def __str__(self):
         return ', '.join(self.aluno_set.values_list('nome', flat=True))
@@ -182,6 +197,13 @@ class GrupoQuestao(models.Model):
     atribuicoes = models.ManyToManyField('Aluno', through='GrupoQuestaoAluno')
     ativo = models.BooleanField()
 
+    @property
+    def correto(self):
+        for pergunta in self.grupoquestaoaluno_set.all():
+            if not pergunta.correto:
+                return False
+        return True
+
     def atribuir(self):
         perguntas = Pergunta.objects.filter(questao=self.questao).order_by('?')
         alunos = self.grupo.aluno_set.all()
@@ -223,6 +245,25 @@ class RespostaFlow(models.Model):
         unique_together = ("pergunta", "resposta", "aluno")
 
 
+class Desafio(models.Model):
+    nome = models.CharField(max_length=200)
+    pontos = models.IntegerField()
+
+    def __str__(self):
+        return self.nome
+
+    class Meta(object):
+        ordering = ('id',)
+
+
+class DesafioGrupo(models.Model):
+    desafio = models.ForeignKey(Desafio, on_delete=models.CASCADE)
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
+
+    class Meta(object):
+        unique_together = ("desafio", "grupo")
+
+
 # Gera os tokens para os usuários automaticamente
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -242,8 +283,40 @@ def atribuir_questoes(sender, instance=None, created=False, **kwargs):
 
 @receiver(post_save, sender=GrupoQuestaoAluno)
 def verifica_respostas(sender, instance=None, created=False, **kwargs):
-    perguntas = GrupoQuestaoAluno.objects.filter(grupo_questao=instance.grupo_questao)
+    grupo_questao = instance.grupo_questao
+    perguntas = GrupoQuestaoAluno.objects.filter(grupo_questao=grupo_questao)
     for pergunta in perguntas:
         if not pergunta.resposta:
             return None
+
+    # O grupo acertou?
+    grupo = grupo_questao.grupo
+    if grupo_questao.correto:
+        grupo.acertou()
+    else:
+        grupo.errou()
+
+    # primeiro acerto
+    if grupo.acertos == 1 and grupo.sequencia == 1:
+        DesafioGrupo.objects.create(grupo=grupo,desafio_id=1)
+
+    # 3 acertos em sequencia
+    if grupo.sequencia == 3:
+        DesafioGrupo.objects.create(grupo=grupo,desafio_id=2)
+
+    # 5 acertos
+    if grupo.acertos == 5:
+        DesafioGrupo.objects.create(grupo=grupo,desafio_id=3)
+
+    #todas as questoes
+    total_questoes = Questao.objects.count()
+    if grupo.respondidas == total_questoes:
+        DesafioGrupo.objects.create(grupo=grupo,desafio_id=4)
+
     instance.grupo_questao.grupo.nova_questao()
+
+@receiver(post_save, sender=DesafioGrupo)
+def desafio_grupo(sender, instance=None, created=False, **kwargs):
+    p = Placar.objects.get(grupo=instance.grupo)
+    p.pontos += instance.desafio.pontos
+    p.save()
