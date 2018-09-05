@@ -1,6 +1,12 @@
 <template>
   <section>
     <form method="post" @submit.prevent="login">
+      <p class="errors" v-if="errors.length">
+        <b>Por favor corrija os seguintes erros</b>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
       <div class="row">
         <div class="input-field col s12">
           <input id="id_username"
@@ -32,11 +38,13 @@
     data: function () {
       return {
         'username': null,
-        'password': null
+        'password': null,
+        errors: []
       }
     },
     methods: {
       login: function (e) {
+        this.errors = []
         this.$http.post('/api/api-token-auth/', {
           'username': this.username,
           'password': this.password
@@ -48,7 +56,7 @@
           })
           .catch((err) => {
             localStorage.removeItem('user-token')
-            console.log(err)
+            this.errors = err.data.non_field_errors
           })
         e.preventDefault()
       }

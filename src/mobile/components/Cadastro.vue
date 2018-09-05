@@ -81,6 +81,8 @@
           var token = response.data.token
           localStorage.setItem('user-token', token)
           this.$router.push('/')
+        }).catch((err) => {
+          this.errors = err.data
         })
         window.scrollTo(0, 0)
         e.preventDefault()
