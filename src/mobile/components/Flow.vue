@@ -146,7 +146,9 @@ export default {
     background-color: #fff;
   }
   .respostas button.active{
-    background-color: #ccc;
+    background-color: #26a69a;
+    border-color: #26a69a;
+    color: #fff;
   }
   .escala{display: flex;}
   .escala span{
