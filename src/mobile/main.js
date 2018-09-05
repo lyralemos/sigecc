@@ -51,6 +51,7 @@ Vue.mixin({
       notification[0].classList.remove('show')
     },
     showPopup () {
+      window.scrollTo(0, 0)
       this.closeNotification()
       var popup = document.getElementsByClassName('popup-wrapper')
       popup[0].classList.add('show')
