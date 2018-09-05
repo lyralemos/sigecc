@@ -29,27 +29,27 @@
             Escolha uma resposta.
           </p>
 
-          <label>
+          <label class="resposta">
             <input class="with-gap" type="radio" value="opcao1" v-model="resposta" />
             <span>{{ escolhida.pergunta.opcao1 }}</span>
           </label>
 
-          <label>
+          <label class="resposta">
             <input class="with-gap" type="radio" value="opcao2" v-model="resposta" />
             <span>{{ escolhida.pergunta.opcao2 }}</span>
           </label>
 
-          <label>
+          <label class="resposta">
             <input class="with-gap" type="radio" value="opcao3" v-model="resposta" />
             <span>{{ escolhida.pergunta.opcao3 }}</span>
           </label>
 
-          <label>
+          <label class="resposta">
             <input class="with-gap" type="radio" value="opcao4" v-model="resposta" />
             <span>{{ escolhida.pergunta.opcao4 }}</span>
           </label>
 
-          <label>
+          <label class="resposta">
             <input class="with-gap" type="radio" value="opcao5" v-model="resposta" />
             <span>{{ escolhida.pergunta.opcao5 }}</span>
           </label>
@@ -200,6 +200,12 @@
 </script>
 
 <style scoped>
+
+  h6{
+    line-height: 22px;
+    margin: 15px 0;
+  }
+
   label{
     display: block
   }
@@ -248,6 +254,14 @@
     display: table-cell;
     vertical-align: middle;
     width: 80%;
+  }
+
+  label.resposta{
+    margin-bottom: 10px;
+  }
+
+  label.resposta span{
+    line-height: 19px;
   }
 
   button{
