@@ -1,10 +1,8 @@
 <template lang="html">
-  <section>
-    <div class="espera">
-      <span class="tempo material-icons">access_time</span>
-      <h5>Aguardando a liberação do próximo módulo.</h5>
-    </div>
-  </section>
+  <div class="espera">
+    <span class="tempo material-icons">access_time</span>
+    <h5>Aguardando a liberação do próximo módulo.</h5>
+  </div>
 </template>
 
 <script>
@@ -45,14 +43,18 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style>
 
   .espera{
+    width: 90%;
     text-align: center;
-    padding: 20px 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
   }
 
   .tempo{
-    font-size: 100px;
+    font-size: 150px;
   }
 </style>

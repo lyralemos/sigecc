@@ -29,8 +29,12 @@ class GrupoQuestaoAlunoInline(admin.TabularInline):
 class GrupoQuestaoAmdin(admin.ModelAdmin):
     inlines = [GrupoQuestaoAlunoInline]
 
+
+class AlunoAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'genero')
+
 admin.site.register(Modulo, ModuloAdmin)
-admin.site.register(Aluno)
+admin.site.register(Aluno, AlunoAdmin)
 admin.site.register(PerfilPergunta)
 admin.site.register(PerfilResposta)
 admin.site.register(Grupo, GrupoAdmin)

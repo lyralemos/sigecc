@@ -101,6 +101,7 @@
   .spin {
     -webkit-animation: fa-spin 1s infinite linear;
     animation: fa-spin 1s infinite linear;
+    float: left;
   }
 
   html, body, #app{height: 100%}
@@ -316,6 +317,14 @@
 
   .notification img{
     float: right;
+  }
+
+  .centered{
+    width:90%;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
   }
 
 

@@ -1,6 +1,6 @@
 <template>
   <section class="center-align">
-    <div class="inicio">
+    <div class="centered">
       <h5><b>Bem vindo ao Sistema Experimental!</b></h5>
       <p style="text-align:justify">
         Hoje iremos realizar uma tarefa diferente! Para testar seus conhecimentos
@@ -40,12 +40,4 @@
 </script>
 
 <style>
-  .inicio{
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    padding: 15px;
-  }
 </style>

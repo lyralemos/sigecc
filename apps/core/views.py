@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User, AnonymousUser
 from django.shortcuts import render
+from django.db import IntegrityError
 
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -23,7 +25,10 @@ class AlunoViewSet(viewsets.ModelViewSet):
     serializer_class = AlunoSerializer
 
     def create(self, request):
-        user = User.objects.create_user(request.data['cpf'],'fake@email.com',request.data['cpf'])
+        try:
+            user = User.objects.create_user(request.data['cpf'],'fake@email.com',request.data['cpf'])
+        except IntegrityError:
+            return Response({'errors':['Esse usuário já existe']}, status=status.HTTP_400_BAD_REQUEST)
         aluno = Aluno.objects.create(
             nome = request.data['nome'],
             nascimento = request.data['nascimento'],

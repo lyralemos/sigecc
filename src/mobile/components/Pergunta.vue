@@ -59,15 +59,19 @@
           </p>
         </form>
       </div>
-      <div class="resultado" v-if="resultado">
-        <span class="acerto" v-if="acerto">
-          <i class="material-icons large">check</i><br>
-          <h5>Acertou!</h5>
-        </span>
-        <span class="erro" v-if="!acerto">
-          <i class="material-icons large">close</i><br>
-          <h5>Errou!</h5>
-        </span>
+      <div class="resultado centered" v-if="resultado">
+        <template v-if="acerto">
+          <h5>Resposta correta!</h5>
+          <span class="acerto">
+            <i class="material-icons large">check</i><br>
+          </span>
+        </template>
+        <template v-if="!acerto">
+          <h5>Resposta errada!</h5>
+          <span class="erro">
+            <i class="material-icons large">close</i><br>
+          </span>
+        </template>
         <br><br>
 
         <button type="button" class="btn disabled" v-if="perguntas.length > 1">Aguardando outras respostas...</button>
@@ -223,7 +227,6 @@
   .resultado{
     background: #fff;
     text-align: center;
-    padding-top: 30px;
   }
 
   .resultado span{
@@ -246,6 +249,10 @@
 
   .resultado span i{
     color: #fff;
+  }
+
+  .resultado h5{
+    padding-bottom: 20px;
   }
 
   .perguntas li{
@@ -272,6 +279,8 @@
   button{
     width: 100%;
   }
-
+  .acerto i{
+    font-size: 9rem;
+  }
 
 </style>

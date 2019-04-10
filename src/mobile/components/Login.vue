@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="centered">
     <form method="post" @submit.prevent="login">
       <p class="errors" v-if="errors.length">
         <b>Por favor corrija os seguintes erros</b>
@@ -25,7 +25,7 @@
         </div>
         <div class="center-align">
           <button type="submit" class="btn">Entrar</button> <br /><br />
-          <router-link to="/cadastro" v-if="$global.liberado == false">Cadastre-se</router-link>
+          <router-link to="/cadastro" v-if="$global.liberado == false" class="waves-effect waves-teal btn-flat">Cadastre-se</router-link>
         </div>
       </div>
     </form>

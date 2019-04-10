@@ -15,8 +15,8 @@
             type="text"
             v-model="cpf"
             required>
-          <label for="id_cpf">CPF</label>
-          <span class="helper-text" data-error="wrong" data-success="right">Somente números</span>
+          <label for="id_cpf">Usuário</label>
+          <span class="helper-text" data-error="wrong" data-success="right">Sugestão: use sua matrícula</span>
         </div>
 
         <div class="input-field col s12">
@@ -38,10 +38,10 @@
         <div class="input-field col s12">
           <select id="id_genero" v-model="genero">
             <option value="" selected>Escolha um opção</option>
-            <option value="1">Masculino</option>
-            <option value="2">Feminino</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
           </select>
-          <label>Gênero</label>
+          <label>Sexo</label>
         </div>
 
         <div class="divider"></div>
@@ -80,9 +80,9 @@
         }).then((response) => {
           var token = response.data.token
           localStorage.setItem('user-token', token)
-          this.$router.push('/')
+          this.$router.push('/perfil')
         }).catch((err) => {
-          this.errors = err.data
+          this.errors = err.data.errors
         })
         window.scrollTo(0, 0)
         e.preventDefault()
@@ -91,7 +91,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   button[type="submit"]{
     width: 100%;
     margin-bottom: 20px;

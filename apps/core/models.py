@@ -55,6 +55,18 @@ class Modulo(models.Model):
                 qs = qs.exclude(pk=self.pk)
             qs.update(ativo=False)
         super(Modulo, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        result = ''
+        if self.colaboracao:
+            result += u'Com Colaboração, '
+        else:
+            result += u'Sem Colaboração, '
+        if self.competicao:
+            result += u'Competição, '
+        else:
+            result += u'Sem Competição, '
+        return result
 
 
 class Aluno(models.Model):
