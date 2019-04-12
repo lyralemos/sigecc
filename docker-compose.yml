@@ -7,15 +7,25 @@ services:
       - '127.0.0.1:5432:5432'
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    # command: python3 manage.py runserver 0.0.0.0:8000
+    command: ["./wait-for-postgres.sh", "db", "./entrypoint.sh"]
     volumes:
       - .:/code
+      # Mount entrypoint.sh to run in container
+      - ./entrypoint.sh:/code/entrypoint.sh
+      # Mount wait-for-postgres.sh to run in container
+      - ./wait-for-postgres.sh:/code/wait-for-postgres.sh
     ports:
       - "8000:8000"
     depends_on:
       - db
+    restart: always
 
 volumes:
   pgdata:
