@@ -63,7 +63,7 @@ class Modulo(models.Model):
         else:
             result += u'Sem Colaboração, '
         if self.competicao:
-            result += u'Competição, '
+            result += u'Com Competição, '
         else:
             result += u'Sem Competição, '
         return result
@@ -162,7 +162,9 @@ class Grupo(models.Model):
 
 
     def __str__(self):
-        return ', '.join(self.aluno_set.values_list('nome', flat=True))
+        nomes = self.aluno_set.values_list('nome', flat=True)
+        nomes = [i.split(' ')[0] for i in nomes]
+        return ', '.join(nomes)
 
 
 class Placar(models.Model):
