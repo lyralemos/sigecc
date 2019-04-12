@@ -1,21 +1,15 @@
 version: '3'
 
 services:
-  nginx-ssl-proxy:
+  nginx:
     build: ./nginx/
-    restart: always
-    environment:
-      UPSTREAM: web:8000
-      SERVERNAME: lyralemos.com.br
+    container_name: ng01
     ports:
       - "80:80"
-      - "443:443"
     volumes:
-      - "/etc/letsencrypt"
-      - static:/code/public
+      - ./public:/code/public
+      - ./nginx/conf:/etc/nginx/conf.d
     depends_on:
-      - web
-    links:
       - web
   db:
     image: postgres
@@ -33,12 +27,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - static:/code/public
+      - ./public:/code/public
     depends_on:
-      - db
-    links:
       - db
 
 volumes:
   pgdata:
-  static:
+  public:

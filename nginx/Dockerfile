@@ -1,3 +1,3 @@
-FROM danieldent/nginx-ssl-proxy
+FROM nginx:latest
 
-COPY ./static.conf /etc/nginx/main_location.conf
+RUN mkdir /code

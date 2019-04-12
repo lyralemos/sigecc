@@ -290,7 +290,7 @@
 
   .notification{
     position: absolute;
-    top: -10px;
+    top: -110px;
     width: 90%;
     left:50%;
     padding: 10px;
