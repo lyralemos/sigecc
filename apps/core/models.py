@@ -25,6 +25,7 @@ def chunks(l, n):
 
 
 class Modulo(models.Model):
+    nome = models.CharField(max_length=200, blank=True)
     colaboracao = models.BooleanField(default=False)
     competicao = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
@@ -57,16 +58,7 @@ class Modulo(models.Model):
         super(Modulo, self).save(*args, **kwargs)
     
     def __str__(self):
-        result = ''
-        if self.colaboracao:
-            result += u'Com Colaboração, '
-        else:
-            result += u'Sem Colaboração, '
-        if self.competicao:
-            result += u'Com Competição, '
-        else:
-            result += u'Sem Competição, '
-        return result
+        return self.nome
 
 
 class Aluno(models.Model):
