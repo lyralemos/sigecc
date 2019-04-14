@@ -6,12 +6,8 @@ class ModuloAdmin(admin.ModelAdmin):
     list_display = ('__str__','colaboracao', 'competicao', 'ativo', 'liberado')
 
 
-class PerguntaInline(admin.TabularInline):
-    model = Pergunta
-
-
 class QuestaoAdmin(admin.ModelAdmin):
-    inlines = (PerguntaInline,)
+    pass
 
 
 class GrupoQuestaoInline(admin.TabularInline):

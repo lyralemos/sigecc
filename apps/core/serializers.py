@@ -94,7 +94,7 @@ class PerguntaSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Pergunta
-        exclude = ('questao', 'resposta')
+        exclude = ('resposta',)
 
 class GrupoQuestaoAlunoSerializer(serializers.ModelSerializer):
     aluno = AlunoSerializer()
@@ -117,7 +117,7 @@ class QuestaoSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Questao
-        fields = ('id', 'texto')
+        fields = ('id',)
 
 
 class GrupoSerializer(serializers.ModelSerializer):

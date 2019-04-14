@@ -37,9 +37,7 @@ class Modulo(models.Model):
             QTD = 3 if self.colaboracao == True else 1
             alunos = self.aluno_set.order_by('?').values_list('pk',flat=True)
             for g in list(chunks(alunos,QTD)):
-                grupo = Grupo.objects.create(
-                    modulo = self
-                )
+                grupo = Grupo.objects.create(modulo = self, quantidade=QTD)
                 Aluno.objects.filter(pk__in=g).update(grupo=grupo)
                 grupo.atribuir()
             self.liberado = True;
@@ -102,6 +100,7 @@ class PerfilResposta(models.Model):
 
 class Grupo(models.Model):
     nome = models.CharField(max_length=100, blank=True)
+    quantidade = models.IntegerField()
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
     questoes = models.ManyToManyField('Questao', through='GrupoQuestao')
     respondidas = models.IntegerField(default=0)
@@ -115,6 +114,16 @@ class Grupo(models.Model):
             return self.questoes.get(grupoquestao__ativo=True)
         except Questao.DoesNotExist:
             return None
+    
+    @property
+    def perguntas_respondidas(self):
+        Pergunta = apps.get_model('core', 'Pergunta')
+
+        respondidas = Pergunta.objects.none()
+        for questao in self.questoes.all():
+            respondidas = respondidas | questao.perguntas.all()
+        
+        return respondidas.values_list('pk', flat=True)
 
     def atribuir(self):
         GrupoQuestao = apps.get_model('core', 'GrupoQuestao')
@@ -122,24 +131,35 @@ class Grupo(models.Model):
 
     def nova_questao(self):
         Questao = apps.get_model('core', 'Questao')
+        Pergunta = apps.get_model('core', 'Pergunta')
         GrupoQuestao = apps.get_model('core', 'GrupoQuestao')
+        Modulo = apps.get_model('core', 'Modulo')
 
         GrupoQuestao.objects.filter(grupo=self).update(ativo=False)
 
         # Só sorteia se o modulo não estiver finalizado
         if not self.modulo.finalizado:
-            respondidas = self.questoes.values_list('pk', flat=True)
-            disponiveis = Questao.objects.filter(modulos=self.modulo).exclude(id__in=respondidas)
-            count = len(disponiveis)
-            try:
-                random_index = random.randint(0, count - 1)
-                grupo_questao = GrupoQuestao.objects.create(
-                    grupo = self,
-                    questao = disponiveis[random_index],
-                    ativo = True
-                )
-            except ValueError:
-                pass
+            disponiveis = Pergunta.objects.exclude(pk__in=self.perguntas_respondidas).order_by('?')
+            
+            questao = Questao.objects.create()
+            questao.modulos.add(self.modulo)
+            questao.perguntas.add(*disponiveis[:self.quantidade])
+
+            grupo_questao = GrupoQuestao.objects.create(
+                grupo = self,
+                questao = questao,
+                ativo = True
+            )
+            # count = len(disponiveis)
+            # try:
+            #     random_index = random.randint(0, count - 1)
+            #     grupo_questao = GrupoQuestao.objects.create(
+            #         grupo = self,
+            #         questao = disponiveis[random_index],
+            #         ativo = True
+            #     )
+            # except ValueError:
+            #     pass
 
     def acertou(self):
         self.respondidas += 1
@@ -154,6 +174,8 @@ class Grupo(models.Model):
 
 
     def __str__(self):
+        if self.nome:
+            return self.nome
         nomes = self.aluno_set.values_list('nome', flat=True)
         nomes = [i.split(' ')[0] for i in nomes]
         return ', '.join(nomes)
@@ -180,19 +202,21 @@ class QuestaoQuerySet(models.query.QuerySet):
 
 
 class Questao(models.Model):
-    texto = models.TextField()
+    # texto = models.TextField()
     modulos = models.ManyToManyField(Modulo)
+    perguntas = models.ManyToManyField('Pergunta')
 
     objects = QuestaoQuerySet.as_manager()
 
-    def __str__(self):
-        return self.texto
+    # def __str__(self):
+    #     return self.texto
 
 
 class Pergunta(models.Model):
 
-    questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
-    titulo = models.CharField(max_length=200)
+    # questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
+    # titulo = models.CharField(max_length=200)
+    enunciado = models.TextField(blank=True)
     opcao1 = models.CharField(max_length=200)
     opcao2 = models.CharField(max_length=200)
     opcao3 = models.CharField(max_length=200)
@@ -201,7 +225,7 @@ class Pergunta(models.Model):
     resposta = models.CharField(max_length=6, choices=RESPOSTA_CHOICE)
 
     def __str__(self):
-        return self.titulo
+        return self.enunciado
 
 
 class GrupoQuestao(models.Model):
@@ -218,7 +242,8 @@ class GrupoQuestao(models.Model):
         return True
 
     def atribuir(self):
-        perguntas = Pergunta.objects.filter(questao=self.questao).order_by('?')
+        # perguntas = Pergunta.objects.filter(questao=self.questao).order_by('?')
+        perguntas = self.questao.perguntas.all()
         alunos = self.grupo.aluno_set.all()
         for aluno,pergunta in zip(alunos,perguntas):
             GrupoQuestaoAluno.objects.create(

@@ -3,7 +3,6 @@
     <div class="row">
       <div class="col s12" v-if="questao && !resultado">
         <h5>Questão:</h5>
-        <p class="texto">{{ questao.texto }}</p>
         <div class="divider"></div>
 
         <div class="perguntas" v-if="!escolhida">
@@ -12,7 +11,7 @@
             <li v-for="pergunta in perguntas">
               <i class="material-icons medium">person_pin</i>
               <div class="details">
-                <b>{{ pergunta.pergunta.titulo }}</b><br>
+                <b>{{ pergunta.pergunta.enunciado }}</b><br>
                 {{ pergunta.aluno.nome }}
               </div>
             </li>
@@ -23,7 +22,7 @@
         </div>
         <form action="#" method="post" v-if="escolhida" @submit.prevent="responder">
           <h6>
-            {{ escolhida.pergunta.titulo }}
+            {{ escolhida.pergunta.enunciado }}
           </h6>
           <p v-if="this.error" class="errors">
             Escolha uma resposta.
@@ -125,7 +124,7 @@
             this.questao = response.data.questao
             this.perguntas = response.data.perguntas
 
-            if (!this.questao.texto) {
+            if (!this.perguntas.length) {
               localStorage.setItem('status', '/flow')
               this.$router.push('/flow')
             }
