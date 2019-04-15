@@ -1,6 +1,15 @@
 <template lang="html">
   <section>
+    <div class="parabens" v-if="!parabens">
+      <div class="mensagem">
+        <h3>Parabéns!! </h3>
+        <p>Você chegou ao final das perguntas. Clique em <b>OK</b> para continuar.</p>
+        <button class="btn" @click="parabens=true">OK</button>
+      </div>
+      <div class="overlay"></div>
+    </div>
     <form acion="#" method="post" @submit="checkForm">
+
 
       <p class="errors" v-if="errors.length">
         <b>Por favor corrija os seguintes erros</b>
@@ -76,7 +85,8 @@ export default {
     return {
       respostas: {},
       perguntas: [],
-      errors: []
+      errors: [],
+      parabens: false
     }
   },
   methods: {
@@ -165,6 +175,27 @@ export default {
   button[type="submit"]{
     width: 100%;
     margin-bottom: 20px;
+  }
+
+  .parabens{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left: 0;
+  }
+  .parabens .mensagem{
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center
   }
 
 </style>
