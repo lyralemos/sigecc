@@ -8,7 +8,7 @@
         <div class="perguntas" v-if="!escolhida">
           <h6>Perguntas do Grupo</h6>
           <ul>
-            <li v-for="pergunta in perguntas">
+            <li v-for="pergunta in perguntas" v-bind:key="pergunta.id">
               <i class="material-icons medium">person_pin</i>
               <div class="details">
                 <b>{{ pergunta.pergunta.enunciado }}</b><br>
@@ -60,7 +60,7 @@
       </div>
       <div class="resultado centered" v-if="resultado">
         <template v-if="acerto">
-          <h5>Resposta correta!</h5>
+          <h5>Você acertou!</h5>
           <span class="acerto">
             <i class="material-icons large">check</i><br>
           </span>
@@ -72,12 +72,11 @@
           </span>
         </template>
         <br><br>
-
         <button type="button" class="btn disabled" v-if="perguntas.length > 1">Aguardando outras respostas...</button>
         <button type="button" class="btn" v-if="perguntas.length == 1" @click="getQuestao">Próxima Pergunta</button>
       </div>
     </div>
-    <Placar v-if="$global.competicao == true"></Placar>
+    <Placar v-if="$global.competicao == true" ref="placar"></Placar>
   </section>
 </template>
 
@@ -166,6 +165,8 @@
             this.resultado = true
             this.acerto = response.data.result
 
+            this.$refs.placar.getPlacar()
+
             if (this.perguntas.length > 1) {
               this.startInterval()
             }
@@ -228,7 +229,8 @@
     text-align: center;
   }
 
-  .resultado span{
+  .resultado span.erro,
+  .resultado span.acerto{
     width: 200px;
     margin: auto;
     border: 1px solid #ddd;
