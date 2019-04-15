@@ -51,7 +51,7 @@ class ModuloSerializer(serializers.ModelSerializer):
         return obj.grupo_set.count()
 
     def get_questoes_count(self, obj):
-        return obj.questao_set.count()
+        return Pergunta.objects.count()
 
     def get_respostas_count(self, obj):
         return GrupoQuestaoAluno.objects.filter(
