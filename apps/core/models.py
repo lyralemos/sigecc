@@ -140,16 +140,17 @@ class Grupo(models.Model):
         # Só sorteia se o modulo não estiver finalizado
         if not self.modulo.finalizado:
             disponiveis = Pergunta.objects.exclude(pk__in=self.perguntas_respondidas).order_by('?')
-            
-            questao = Questao.objects.create()
-            questao.modulos.add(self.modulo)
-            questao.perguntas.add(*disponiveis[:self.quantidade])
 
-            grupo_questao = GrupoQuestao.objects.create(
-                grupo = self,
-                questao = questao,
-                ativo = True
-            )
+            if disponiveis.count():
+                questao = Questao.objects.create()
+                questao.modulos.add(self.modulo)
+                questao.perguntas.add(*disponiveis[:self.quantidade])
+
+                grupo_questao = GrupoQuestao.objects.create(
+                    grupo = self,
+                    questao = questao,
+                    ativo = True
+                )
             # count = len(disponiveis)
             # try:
             #     random_index = random.randint(0, count - 1)
@@ -237,9 +238,9 @@ class GrupoQuestao(models.Model):
     @property
     def correto(self):
         for pergunta in self.grupoquestaoaluno_set.all():
-            if not pergunta.correto:
-                return False
-        return True
+            if pergunta.correto:
+                return True
+        return False
 
     def atribuir(self):
         # perguntas = Pergunta.objects.filter(questao=self.questao).order_by('?')
@@ -347,7 +348,7 @@ def verifica_respostas(sender, instance=None, created=False, **kwargs):
         DesafioGrupo.objects.create(grupo=grupo,desafio_id=3)
 
     #todas as questoes
-    total_questoes = Questao.objects.filter(modulos__id=grupo.modulo_id).count()
+    total_questoes = Pergunta.objects.count()
     if grupo.respondidas == total_questoes:
         DesafioGrupo.objects.create(grupo=grupo,desafio_id=4)
 
