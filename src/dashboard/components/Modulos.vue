@@ -4,14 +4,14 @@
 
     <table class="table table-bordered">
       <tr>
-        <th>Id</th>
+        <th>Nome</th>
         <th>Colaboração</th>
         <th>Competição</th>
         <th>Ativo</th>
         <th>Liberado</th>
       </tr>
-      <tr v-for="modulo in modulos">
-        <td>{{ modulo.id }}</td>
+      <tr v-for="modulo in modulos" v-bind:key="modulo.id">
+        <td>{{ modulo.nome }}</td>
         <td><Check :bool="modulo.colaboracao"></Check></td>
         <td><Check :bool="modulo.competicao"></Check></td>
         <td><Check :bool="modulo.ativo"></Check></td>

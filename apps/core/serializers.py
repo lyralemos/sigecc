@@ -96,6 +96,12 @@ class PerguntaSerializer(serializers.ModelSerializer):
         model = Pergunta
         exclude = ('resposta',)
 
+class FullPerguntaSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = Pergunta
+        fields = '__all__'
+
 class GrupoQuestaoAlunoSerializer(serializers.ModelSerializer):
     aluno = AlunoSerializer()
     pergunta = PerguntaSerializer()
@@ -129,7 +135,7 @@ class GrupoSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Grupo
-        fields = ('id', 'aluno_set', 'nome', 'modulo', 'questao')
+        fields = ('id', 'aluno_set', 'nome', 'modulo', 'questao','__str__')
 
 
 class PerguntaFlowSerializer(serializers.ModelSerializer):

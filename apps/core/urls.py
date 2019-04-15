@@ -5,7 +5,7 @@ from rest_framework.authtoken import views
 
 from .views import AlunoViewSet, ModuloViewSet, PerfilPerguntaViewSet, \
     GrupoViewSet, PlacarViewSet, QuestaoViewSet, PerguntaFlowViewSet, \
-    DesafioViewSet
+    DesafioViewSet, PerguntaViewSet
 
 router = routers.DefaultRouter()
 router.register(r'alunos', AlunoViewSet)
@@ -13,6 +13,7 @@ router.register(r'modulos', ModuloViewSet)
 router.register(r'grupos', GrupoViewSet)
 router.register(r'placar', PlacarViewSet)
 router.register(r'questoes', QuestaoViewSet)
+router.register(r'perguntas', PerguntaViewSet)
 router.register(r'perguntas_perfil', PerfilPerguntaViewSet, 'perguntas-perfil')
 router.register(r'perguntas_flow', PerguntaFlowViewSet)
 router.register(r'desafio', DesafioViewSet)

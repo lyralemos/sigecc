@@ -5,16 +5,14 @@
     <table class="table table-bordered">
       <tr>
         <th>Id</th>
-        <th>Texto</th>
-        <th>Perguntas</th>
+        <th>Enunciado</th>
+        <th>Opcões</th>
+        <th>Resposta</th>
       </tr>
-      <tr v-for="questao in questoes">
-        <td>{{ questao.id }}</td>
-        <td>{{ questao.texto }}</td>
+      <tr v-for="pergunta in questoes">
+        <td>{{ pergunta.id }}</td>
+        <td>{{ pergunta.enunciado }}</td>
         <td>
-          <span v-for="pergunta in questao.pergunta_set">
-            {{ pergunta.titulo }}<br />
-            Respostas:
             <ul>
               <li>a) {{ pergunta.opcao1 }}</li>
               <li>b) {{ pergunta.opcao2 }}</li>
@@ -22,8 +20,9 @@
               <li>d) {{ pergunta.opcao4 }}</li>
               <li>e) {{ pergunta.opcao5 }}</li>
             </ul>
-            <b>Resposta: {{ getResposta(pergunta) }}</b>
-          </span>
+        </td>
+        <td>
+            {{ getResposta(pergunta) }}
         </td>
       </tr>
     </table>
@@ -39,7 +38,7 @@ export default {
   methods: {
     getQuestoes: function () {
       this.$global.loading = true
-      this.$http.get('/api/v1/questoes/')
+      this.$http.get('/api/v1/perguntas/')
       .then((response) => {
         this.questoes = response.data
         this.$global.loading = false

@@ -16,7 +16,7 @@ from .models import Aluno, Modulo, PerfilPergunta, PerfilResposta, Grupo, \
 from .serializers import AlunoSerializer, ModuloSerializer, \
     PerfilPerguntaSerializer, GrupoSerializer, PlacarSerializer, \
     QuestaoSerializer, GrupoQuestaoAlunoSerializer, PerguntaFlowSerializer, \
-    DesafioSerializer
+    DesafioSerializer, FullPerguntaSerializer
 
 class AlunoViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -65,7 +65,7 @@ class AlunoViewSet(viewsets.ModelViewSet):
 
 
 class ModuloViewSet(viewsets.ModelViewSet):
-    queryset = Modulo.objects.filter(ativo=True)
+    queryset = Modulo.objects.all()
     serializer_class = ModuloSerializer
 
     @action(methods=['get'], detail=False)
@@ -100,6 +100,10 @@ class PerfilPerguntaViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         respondidas = PerfilResposta.objects.filter(aluno__user=self.request.user).values_list('pergunta',flat=True)
         return PerfilPergunta.objects.exclude(id__in=list(respondidas))
+
+class PerguntaViewSet(viewsets.ModelViewSet):
+    serializer_class = FullPerguntaSerializer
+    queryset = Pergunta.objects.all()
 
 
 class GrupoViewSet(viewsets.ModelViewSet):

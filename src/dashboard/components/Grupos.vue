@@ -7,12 +7,12 @@
         <th>Nome</th>
         <th>Alunos</th>
       </tr>
-      <tr v-for="grupo in grupos">
-        <td>{{ grupo.nome }}</td>
+      <tr v-for="grupo in grupos" v-bind:key="grupo.id">
+        <td>{{ grupo.__str__ }}</td>
         <td>
           <ul>
             <li v-for="aluno in grupo.aluno_set">
-              {{ aluno.nome }}
+              {{ aluno }}
             </li>
           </ul>
         </td>
