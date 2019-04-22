@@ -1,79 +1,73 @@
 <template>
-  <section>
+  <section class="main">
+    <Progressao />
     <div class="row">
       <div class="col s12" v-if="questao && !resultado">
-        <h5>Questão:</h5>
-        <div class="divider"></div>
+        <template v-if="aluno === respondedor.id">
+          <h5>Questão:</h5>
+          <div class="divider"></div>
+          <form action="#" method="post" @submit.prevent="responder">
+            <h6>
+              {{ pergunta.enunciado }}
+            </h6>
+            <p v-if="this.error" class="errors">
+              Escolha uma resposta.
+            </p>
 
-        <div class="perguntas" v-if="!escolhida">
-          <h6>Perguntas do Grupo</h6>
-          <ul>
-            <li v-for="pergunta in perguntas" v-bind:key="pergunta.id">
-              <i class="material-icons medium">person_pin</i>
-              <div class="details">
-                <b>{{ pergunta.pergunta.enunciado }}</b><br>
-                {{ pergunta.aluno.nome }}
-              </div>
-            </li>
-          </ul>
-          <div class="center">
-            <button type="button" class="btn" @click="setEscolhida">Prosseguir</button>
+            <label class="resposta">
+              <input class="with-gap" type="radio" value="opcao1" v-model="resposta" />
+              <span>{{ questao.pergunta.opcao1 }}</span>
+            </label>
+
+            <label class="resposta">
+              <input class="with-gap" type="radio" value="opcao2" v-model="resposta" />
+              <span>{{ questao.pergunta.opcao2 }}</span>
+            </label>
+
+            <label class="resposta">
+              <input class="with-gap" type="radio" value="opcao3" v-model="resposta" />
+              <span>{{ questao.pergunta.opcao3 }}</span>
+            </label>
+
+            <label class="resposta">
+              <input class="with-gap" type="radio" value="opcao4" v-model="resposta" />
+              <span>{{ questao.pergunta.opcao4 }}</span>
+            </label>
+
+            <label class="resposta">
+              <input class="with-gap" type="radio" value="opcao5" v-model="resposta" />
+              <span>{{ questao.pergunta.opcao5 }}</span>
+            </label>
+
+            <p class="center" v-if="aluno === respondedor.id">
+              <button type="submit" class="btn">Responder</button>
+            </p>
+          </form>
+        </template>
+        <template v-if="aluno !== respondedor.id">
+          <div style="text-align: center">
+            <img src="@/assets/hands-helping-solid.svg" alt="">
+            <h5>Ajude a {{respondedor.nome}} responder a próxima questão.</h5>
           </div>
-        </div>
-        <form action="#" method="post" v-if="escolhida" @submit.prevent="responder">
-          <h6>
-            {{ escolhida.pergunta.enunciado }}
-          </h6>
-          <p v-if="this.error" class="errors">
-            Escolha uma resposta.
-          </p>
-
-          <label class="resposta">
-            <input class="with-gap" type="radio" value="opcao1" v-model="resposta" />
-            <span>{{ escolhida.pergunta.opcao1 }}</span>
-          </label>
-
-          <label class="resposta">
-            <input class="with-gap" type="radio" value="opcao2" v-model="resposta" />
-            <span>{{ escolhida.pergunta.opcao2 }}</span>
-          </label>
-
-          <label class="resposta">
-            <input class="with-gap" type="radio" value="opcao3" v-model="resposta" />
-            <span>{{ escolhida.pergunta.opcao3 }}</span>
-          </label>
-
-          <label class="resposta">
-            <input class="with-gap" type="radio" value="opcao4" v-model="resposta" />
-            <span>{{ escolhida.pergunta.opcao4 }}</span>
-          </label>
-
-          <label class="resposta">
-            <input class="with-gap" type="radio" value="opcao5" v-model="resposta" />
-            <span>{{ escolhida.pergunta.opcao5 }}</span>
-          </label>
-
-          <p class="center">
-            <button type="submit" class="btn">Enviar resposta</button>
-          </p>
-        </form>
+        </template>
       </div>
-      <div class="resultado centered" v-if="resultado">
-        <template v-if="acerto">
-          <h5>Você acertou!</h5>
-          <span class="acerto">
-            <i class="material-icons large">check</i><br>
-          </span>
-        </template>
-        <template v-if="!acerto">
-          <h5>Resposta errada!</h5>
-          <span class="erro">
-            <i class="material-icons large">close</i><br>
-          </span>
-        </template>
-        <br><br>
-        <button type="button" class="btn disabled" v-if="perguntas.length > 1">Aguardando outras respostas...</button>
-        <button type="button" class="btn" v-if="perguntas.length == 1" @click="getQuestao">Próxima Pergunta</button>
+      <div class="popup" v-if="resultado">
+        <div class="overlay"></div>
+        <div class="body">
+          <template v-if="acerto">
+            <img class="thumbs sucesso" src="@/assets/thumbs-up-regular.svg" alt="Parabéns" />
+            <div class="mensagem">Parabéns! <br />Você acertou</div>
+          </template>
+          <template v-if="!acerto">
+            <img class="thumbs erro" src="@/assets/thumbs-down-regular.svg" alt="Que pena" />
+            <div class="mensagem">
+              Que pena! <br /> 
+              Não foi dessa vez.
+              </div>
+          </template>
+          <br>
+          <button type="button" class="btn" @click="getQuestao">Continuar</button>
+        </div>
       </div>
     </div>
     <Placar v-if="$global.competicao == true" ref="placar"></Placar>
@@ -83,75 +77,63 @@
 <script>
   import isLoggedMixin from '../loggedin'
   import Placar from './Placar'
+  import Progressao from './Progressao'
 
   export default {
     name: 'Pergunta',
     mixins: [isLoggedMixin],
-    components: {Placar},
+    components: {Placar, Progressao},
     data: function () {
       return {
         aluno: null,
+        grupo_questao: null,
         questao: null,
-        perguntas: null,
-        escolhida: null,
+        pergunta: null,
         resposta: null,
+        respondedor: null,
         error: null,
         resultado: null,
         acerto: null,
         status: null,
-        intervalo: null
+        intervalo: null,
+        retries: 0
       }
     },
     methods: {
       resetData: function () {
         this.aluno = null
+        this.grupo_questao = null
         this.questao = null
-        this.perguntas = null
-        this.escolhida = null
+        this.pergunta = null
         this.resposta = null
+        this.respondedor = null
         this.error = null
         this.resultado = null
         this.acerto = null
         this.status = null
+        this.retries = 0
       },
       getQuestao: function () {
         this.resetData()
         this.$http.get('/api/v1/grupos/perguntas/')
           .then((response) => {
             this.aluno = response.data.aluno
-            this.$global.grupo = response.data.grupo
-            this.questao = response.data.questao
-            this.perguntas = response.data.perguntas
+            this.$global.grupo = response.data.grupo_questao.grupo
+            this.grupo_questao = response.data.grupo_questao
+            this.questao = this.grupo_questao.questao
+            this.pergunta = this.questao.pergunta
+            this.respondedor = response.data.grupo_questao.respondedor
 
-            if (!this.perguntas.length) {
-              localStorage.setItem('status', '/flow')
-              this.$router.push('/flow')
+            if (this.aluno !== this.respondedor.id) {
+              // loop que verifica se questao foi respondida
+              this.getStatus()
             }
-
-            if (this.perguntas.length === 1) {
-              this.setEscolhida()
-            }
-
-            this.updateDesafios()
+            this.$root.$emit('sigecc:update')
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
+            // console.log(err)
+            this.$router.push('/flow')
           })
-      },
-      setEscolhida: function () {
-        for (var index in this.perguntas) {
-          var pergunta = this.perguntas[index]
-
-          if (pergunta.aluno.id === this.aluno) {
-            this.escolhida = pergunta
-          }
-        }
-        if (this.escolhida.resposta !== '') {
-          this.resultado = true
-          this.acerto = this.escolhida.correto
-
-          this.startInterval()
-        }
       },
       responder: function () {
         if (!this.resposta) {
@@ -159,42 +141,36 @@
         } else {
           this.error = false
           this.$http.post('/api/v1/grupos/responder/', {
-            questao_aluno: this.escolhida.id,
+            grupo_questao: this.grupo_questao.id,
             resposta: this.resposta
           }).then((response) => {
             this.resultado = true
             this.acerto = response.data.result
 
-            this.$refs.placar.getPlacar()
-
-            if (this.perguntas.length > 1) {
-              this.startInterval()
+            if (this.$global.competicao) {
+              this.$refs.placar.getPlacar()
             }
           }).catch((err) => {
             console.log(err)
           })
         }
       },
-      startInterval: function () {
-        this.intervalo = setInterval(function () {
-          this.getStatus()
-        }.bind(this), 3000)
-      },
       getStatus: function () {
-        this.$http.get('/api/v1/grupos/status/?questao=' + this.questao.id)
+        this.$http.get('/api/v1/grupos/respondido/?id=' + this.grupo_questao.id)
           .then((response) => {
             this.status = response.data.result
             if (this.status) {
-              clearInterval(this.intervalo)
               this.getQuestao()
+            } else {
+              setTimeout(function () {
+                this.getStatus()
+              }.bind(this), 2000)
             }
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
+            // console.log(err)
             // se der erro aqui é porque não tem mais perguntas
             // redirecionando para flow
-            clearInterval(this.intervalo)
-            localStorage.setItem('status', '/flow')
             this.$router.push('/flow')
           })
       }
@@ -202,13 +178,18 @@
     mounted () {
       if (!this.$global.liberado) {
         this.$router.push('/')
+      } else {
+        this.getQuestao()
       }
-      this.getQuestao()
     }
   }
 </script>
 
 <style scoped>
+
+  .competicao form{
+    padding-bottom:90px; 
+  }
 
   h6{
     line-height: 22px;
@@ -224,36 +205,12 @@
     white-space: pre-line;
   }
 
-  .resultado{
-    background: #fff;
-    text-align: center;
+  .thumbs {
+    width: 138px;
   }
 
-  .resultado span.erro,
-  .resultado span.acerto{
-    width: 200px;
-    margin: auto;
-    border: 1px solid #ddd;
-    display: block;
-    border-radius: 100px;
-    padding: 28px 0;
-    color: #fff;
-  }
-
-  .resultado span.erro{
-    background-color: #EF4836;
-  }
-
-  .resultado span.acerto{
-    background-color: #87D37C;
-  }
-
-  .resultado span i{
-    color: #fff;
-  }
-
-  .resultado h5{
-    padding-bottom: 20px;
+  .popup .mensagem{
+    font-size: 25px;
   }
 
   .perguntas li{
@@ -282,6 +239,10 @@
   }
   .acerto i{
     font-size: 9rem;
+  }
+
+  .popup .body{
+    padding: 15px;
   }
 
 </style>

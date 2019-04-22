@@ -1,3 +1,6 @@
+import base64, uuid
+
+from django.core.files.base import ContentFile
 from django.contrib.auth.models import User, AnonymousUser
 from django.shortcuts import render
 from django.db import IntegrityError
@@ -16,7 +19,7 @@ from .models import Aluno, Modulo, PerfilPergunta, PerfilResposta, Grupo, \
 from .serializers import AlunoSerializer, ModuloSerializer, \
     PerfilPerguntaSerializer, GrupoSerializer, PlacarSerializer, \
     QuestaoSerializer, GrupoQuestaoAlunoSerializer, PerguntaFlowSerializer, \
-    DesafioSerializer, FullPerguntaSerializer
+    DesafioSerializer, FullPerguntaSerializer, GrupoQuestaoSerializer
 
 class AlunoViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -61,7 +64,6 @@ class AlunoViewSet(viewsets.ModelViewSet):
             )
         DesafioGrupo.objects.create(grupo=aluno.grupo, desafio_id=5)
         return Response({'result':True})
-
 
 
 class ModuloViewSet(viewsets.ModelViewSet):
@@ -113,37 +115,48 @@ class GrupoViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=False)
     def perguntas(self, request):
-        questao = request.user.aluno.grupo.questao
-        perguntas_aluno = GrupoQuestaoAluno.objects.filter(
-            grupo_questao__grupo = request.user.aluno.grupo,
-            grupo_questao__ativo=True
-        )
-        serializer_questao = QuestaoSerializer(questao)
-        serializer_perguntas = GrupoQuestaoAlunoSerializer(perguntas_aluno, many=True)
-
-        return Response({
-            'aluno': request.user.aluno.pk,
-            'grupo': request.user.aluno.grupo.pk,
-            'questao': serializer_questao.data,
-            'perguntas': serializer_perguntas.data
-        })
+        grupo = request.user.aluno.grupo
+        try:
+            grupo_questao = GrupoQuestao.objects.get(grupo=grupo, ativo=True)
+            
+            return Response({
+                'aluno': request.user.aluno.pk,
+                'grupo_questao': GrupoQuestaoSerializer(grupo_questao).data,
+            })
+        except GrupoQuestao.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['get'], detail=False)
     def status(self, request):
-        questao_id = request.query_params.get('questao')
-        if request.user.aluno.grupo.questao.pk == int(questao_id):
-            return Response({'result':False})
-        return Response({'result':True})
+        return Response({'grupo': GrupoSerializer(request.user.aluno.grupo).data})
 
+    @action(methods=['get'], detail=False)
+    def respondido(self, request):
+        gq = GrupoQuestao.objects.get(pk=request.query_params['id'])
+        # gq = GrupoQuestao.objects.get(grupo=request.user.aluno.grupo, ativo=True)
+        if gq.resposta:
+            return Response({'result': True})
+        return Response({'result': False})
 
     @action(methods=['post'], detail=False)
     def responder(self, request):
-        questao_aluno = GrupoQuestaoAluno.objects.get(pk=request.data['questao_aluno'])
-        questao_aluno.resposta = request.data['resposta']
-        questao_aluno.save()
-        if questao_aluno.correto:
-            Placar.objects.get(grupo=questao_aluno.grupo_questao.grupo).acerto()
-        return Response({'result': questao_aluno.correto})
+        grupo_questao = GrupoQuestao.objects.get(pk=request.data['grupo_questao'])
+        grupo_questao.resposta = request.data['resposta']
+        grupo_questao.save()
+        if grupo_questao.correto:
+            Placar.objects.get(grupo=grupo_questao.grupo).acerto()
+        return Response({'result': grupo_questao.correto})
+    
+    @action(methods=['patch'], detail=False)
+    def foto(self, request):
+        grupo = request.user.aluno.grupo
+        data = request.data['foto']
+        format, imgstr = data.split(';base64,') # format ~= data:image/X,
+        ext = format.split('/')[-1] # guess file extension
+        id = uuid.uuid4()
+        grupo.foto = ContentFile(base64.b64decode(imgstr), name = id.urn[9:] + '.' + ext)
+        grupo.save()
+        return Response({'result':True})
 
 
 class PlacarViewSet(viewsets.ModelViewSet):
@@ -165,6 +178,13 @@ class QuestaoViewSet(viewsets.ModelViewSet):
 class PerguntaFlowViewSet(viewsets.ModelViewSet):
     queryset = PerguntaFlow.objects.all()
     serializer_class = PerguntaFlowSerializer
+
+    def list(self, request):
+        aluno = request.user.aluno
+        respondidas = RespostaFlow.objects.filter(aluno__pk=aluno.pk).count()
+        if respondidas:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return super(PerguntaFlowViewSet, self).list(request)
 
 
 class DesafioViewSet(viewsets.ModelViewSet):

@@ -23,4 +23,4 @@ urlpatterns = [
     url(r'^v1/', include(router.urls)),
     url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^api-auth/', include('rest_framework.urls'))
-]
+] 

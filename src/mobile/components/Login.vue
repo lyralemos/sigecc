@@ -52,7 +52,11 @@
           .then((response) => {
             const token = response.data.token
             localStorage.setItem('user-token', token)
-            this.$router.push('/')
+            if (this.$global.liberado) {
+              this.$router.push('/pergunta')
+            } else {
+              this.$router.push('/espera')
+            }
           })
           .catch((err) => {
             localStorage.removeItem('user-token')

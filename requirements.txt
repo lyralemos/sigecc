@@ -4,5 +4,6 @@ djangorestframework==3.8.2
 django-webpack-loader
 Markdown==2.6.11
 pytz==2018.4
+Pillow
 psycopg2
 gunicorn

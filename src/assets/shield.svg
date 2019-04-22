@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="39px" height="42px" viewBox="0 0 39 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Questão" transform="translate(-10.000000, -7.000000)" fill="#46A69A" fill-rule="nonzero">
+            <g id="Top">
+                <path d="M46.603125,13.8646396 L31.003125,7.30149944 C30.043402,6.89950019 28.964723,6.89950019 28.005,7.30149944 L12.405,13.8646396 C10.950625,14.47173 10,15.9074169 10,17.4989784 C10,33.7837698 19.303125,45.0395551 27.996875,48.6985058 C28.955625,49.1004981 30.03625,49.1004981 30.995,48.6985058 C37.958125,45.7697045 49,35.6542648 49,17.4989784 C49,15.9074169 48.049375,14.47173 46.603125,13.8646396 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

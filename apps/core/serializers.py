@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
@@ -42,7 +43,6 @@ class ModuloSerializer(serializers.ModelSerializer):
     grupos_count = serializers.SerializerMethodField()
     respostas_count = serializers.SerializerMethodField()
     placar = serializers.SerializerMethodField()
-    desafios = serializers.SerializerMethodField()
 
     def get_alunos_count(self, obj):
         return obj.aluno_set.count()
@@ -54,15 +54,12 @@ class ModuloSerializer(serializers.ModelSerializer):
         return Pergunta.objects.count()
 
     def get_respostas_count(self, obj):
-        return GrupoQuestaoAluno.objects.filter(
-            grupo_questao__grupo__modulo = obj
+        return GrupoQuestao.objects.filter(
+            grupo__modulo = obj
         ).exclude(resposta="").count()
 
     def get_placar(self, obj):
         return PlacarSerializer(Placar.objects.filter(grupo__modulo__ativo=True), many=True).data
-
-    def get_desafios(self, obj):
-        return DesafioSerializer(Desafio.objects.all(), many=True).data
 
     class Meta(object):
         model = Modulo
@@ -71,7 +68,7 @@ class ModuloSerializer(serializers.ModelSerializer):
 class SimpleGrupoSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Grupo
-        fields = ('id','__str__')
+        fields = ('id','__str__', 'foto')
 
 
 class PlacarSerializer(serializers.ModelSerializer):
@@ -111,31 +108,50 @@ class GrupoQuestaoAlunoSerializer(serializers.ModelSerializer):
         fields = ('id', 'aluno', 'pergunta', 'resposta', 'correto')
 
 
-class GrupoQuestaoSerializer(serializers.ModelSerializer):
-    atribuicoes = GrupoQuestaoAlunoSerializer(many=True)
-
-    class Meta(object):
-        model = GrupoQuestao
-        fields = ('atribuicoes',)
-
-
 class QuestaoSerializer(serializers.ModelSerializer):
+    pergunta = PerguntaSerializer()
 
     class Meta(object):
         model = Questao
-        fields = ('id',)
+        fields = ('id','pergunta')
 
 
 class GrupoSerializer(serializers.ModelSerializer):
     aluno_set = serializers.StringRelatedField(many=True)
     questao = QuestaoSerializer()
+    pontos = serializers.SerializerMethodField()
+    total = serializers.SerializerMethodField()
+    desafios = serializers.SerializerMethodField()
+    proximo_desafio = serializers.SerializerMethodField()
 
     def get_questao(self, obj):
         return obj.questao.pk
+    
+    def get_pontos(self, obj):
+        return obj.pontos
+    
+    def get_total(self, obj):
+        return Desafio.objects.aggregate(Sum('pontos'))['pontos__sum']
+    
+    def get_desafios(self, obj):
+        return DesafioGruopSerializer(obj.desafiogrupo_set.all(), many=True).data
+    
+    def get_proximo_desafio(self, obj):
+        return DesafioSerializer(obj.proximo_desafio()).data
 
     class Meta(object):
         model = Grupo
-        fields = ('id', 'aluno_set', 'nome', 'modulo', 'questao','__str__')
+        fields = ('id', '__str__', 'aluno_set', 'nome', 'modulo', 'questao', 'pontos', 'total', 'desafios', 'proximo_desafio')
+
+
+class GrupoQuestaoSerializer(serializers.ModelSerializer):
+    # grupo = GrupoSerializer()
+    questao = QuestaoSerializer()
+    respondedor = AlunoSerializer()
+
+    class Meta(object):
+        model = GrupoQuestao
+        fields = ('__all__')
 
 
 class PerguntaFlowSerializer(serializers.ModelSerializer):
@@ -155,4 +171,12 @@ class RespostaFlowSerializer(serializers.ModelSerializer):
 class DesafioSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Desafio
+        fields = '__all__'
+
+
+class DesafioGruopSerializer(serializers.ModelSerializer):
+    desafio = DesafioSerializer()
+
+    class Meta(object):
+        model = DesafioGrupo
         fields = '__all__'

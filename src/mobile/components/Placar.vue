@@ -1,23 +1,26 @@
 <template>
-  <div class="placar">
+  <div :class="klass" @click="mostraPlacar">
     <div class="acao">
-      <i class="material-icons arrow up" @click="mostraPlacar">keyboard_arrow_up</i>
-      <i class="material-icons arrow down" @click="mostraPlacar">keyboard_arrow_down</i>
+      <i class="material-icons arrow up">keyboard_arrow_up</i>
+      <i class="material-icons arrow down">keyboard_arrow_down</i>
     </div>
     <ul>
-      <li v-for="(p, index) in placar" v-bind:class="{ selected: p.marcar }">
+      <transition-group name="list">
+      <li v-for="(p, index) in placar" v-bind:class="{ selected: p.marcar }" v-bind:key="p.id">
         <a>
-          <i class="material-icons person">person_pin</i>
-          <div class="info">
-            <span class="posicao">{{ index+1 }}º</span>
-            <div class="dados">
-              <b>Colocado</b> ({{p.pontos}} pts) <br>
-              <span class="nome">{{ p.grupo.__str__ }}</span>
-              <i class="material-icons star" v-if="p.marcar">star</i>
-            </div>
-          </div>
+          <img class="circle" :src="p.grupo.foto" alt="" v-if="p.grupo.foto">
+          <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!p.grupo.foto">
+          <span class="posicao">{{ index+1 }}º</span>
         </a>
+        <div class="info">
+          <span class="nome">{{ p.grupo.__str__ }}</span>
+          <div class="barra">
+            <div class="realizado"></div>
+          </div>
+          <span class="pontos">({{p.pontos}} pts)</span>
+        </div>
       </li>
+      </transition-group>
     </ul>
   </div>
 </template>
@@ -28,7 +31,11 @@
     data: function () {
       return {
         placar: null,
-        intervalo_placar: null
+        intervalo_placar: null,
+        klass: {
+          placar: true,
+          full: false
+        }
       }
     },
     mounted () {
@@ -45,6 +52,12 @@
           this.$http.get('/api/v1/placar/', { headers: {'X-No-Loading': 'true'} })
           .then((response) => {
             this.placar = response.data
+            setTimeout(function () {
+              var selectedPosition = document.querySelector('li.selected').getBoundingClientRect()
+              if (selectedPosition.x > 400 || selectedPosition.x < 0) {
+                document.querySelector('.placar ul').scroll(selectedPosition.x, 0)
+              }
+            }, 100)
           })
           .catch((err) => {
             console.log(err)
@@ -62,8 +75,7 @@
         this.getPlacar()
       },
       mostraPlacar: function () {
-        var placar = document.querySelector('.placar')
-        placar.classList.toggle('mostrar')
+        this.klass.full = !this.klass.full
       }
     }
   }
@@ -76,49 +88,47 @@
   left: 0;
   width: 100%;
   background-color: #d8d8d8;
-  padding: 0 20px;
-  transition: all .2s ease;
-  /* top: 82%; */
+  /* padding: 0 20px; */
   height: 90px;
   overflow-y: auto;
 }
 
 .placar .acao{
   text-align: center;
+  height: 24px;
 }
 
-.placar.mostrar{
-  height: 90%;
-}
+.placar .info{display:none}
+
 
 .placar .down{
   display:none;
 }
 
+.list-move {
+  transition: .2s all ease;
+}
+
 .placar ul{
   margin-top:0;
+  margin-bottom: 0;
+  width:100%;
+  height: 51px;
+  padding-left:20px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
-.placar.mostrar li{
-  display: block !important;
-}
-
-.placar.mostrar .down{
-  display: inline-block;
-}
-
-.placar.mostrar .up{
-  display: none;
-}
+.placar ul::-webkit-scrollbar {
+    display: none;
+  }
 
 .placar li{
-  display: none;
-  margin-bottom: 15px;
-  position: relative;
-}
-
-.placar li.selected{
-  display: block;
+  display: inline-block;
+  width: 45px;
+  margin-right: 19px;
+  padding: 0;
 }
 
 .placar i.arrow{
@@ -132,31 +142,110 @@
   margin-right: 10px;
 }
 
-.placar i.star{
-  position: absolute;
-  right: 10px;
-  top:50%;
-  transform: translateY(-50%);
+.placar img {
+  width: 40px;
+  height: 40px;
 }
 
 .placar a{
   color:#333;
-  display: table;
-  width: 100%;
-}
-
-.placar .info{
-  display: table-cell;
-  vertical-align: middle;
-  width: 100%;
+  display: inline-block;
+  position: relative;
 }
 
 .placar .posicao{
-  font-size: 40px;
-  margin-right: 5px;
+  position: absolute;
+  right: -5px;
+  bottom: 4px;
+  display:inline-block;
+  text-align: center;
+  width: 25px;
+  padding: 2px 0;
+  color:#fff;
+  font-size: 14px;
+  background-color: #19A59A;
+  border-radius: 50%;
 }
 
-.placar .dados{
+.placar li.selected{
+  width: 56px;
+}
+
+.placar li.selected img{
+  width: 50px;
+  height: 50px;
+}
+
+.placar li.selected .posicao{
+  font-size: 19px;
+  width: 29px;
+}
+
+.placar.full{
+  height: 90%;
+}
+
+.placar.full .down{
   display: inline-block;
 }
+
+.placar.full .up{
+  display: none;
+}
+
+.placar.full .info{
+  display:block;
+  float: left;
+  margin-left: 10px;
+  width: calc(100% - 65px)
+}
+
+.placar.full ul{
+  height: inherit;
+  overflow: inherit;
+  /* height: 100%; */
+  padding-right: 20px;
+}
+
+.placar.full li{
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  overflow: auto
+}
+
+.placar.full a{
+  float: left;
+  width: 55px;
+}
+
+.placar.full .posicao{
+  right: 0;
+}
+
+.placar.full .barra{
+  background-color: #979797;
+  height: 6px;
+  position: relative;
+  width: 100%;
+}
+
+.placar.full .realizado{
+  background-color: #46A69A;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  transition: .2s all ease;
+}
+
+.placar.full .nome{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.placar.full .pontos{
+  font-size:11px;
+}
+
 </style>

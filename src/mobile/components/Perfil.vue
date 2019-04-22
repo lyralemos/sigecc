@@ -9,7 +9,7 @@
         </ul>
       </p>
       <h5>
-        Responda as perguntas abaixo utilizando considerando se concorda
+        Responda as perguntas abaixo levando em consideração se concorda
         ou não com as afirmações.
       </h5>
       <div class="pergunta" v-for="pergunta in perguntas">

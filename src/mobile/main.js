@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import 'materialize-css/dist/css/materialize.min.css'
+import '@/assets/mobile.css'
 
 Vue.config.productionTip = false
 
@@ -25,20 +26,6 @@ const GlobalPlugin = {
 
 Vue.mixin({
   methods: {
-    updateDesafios () {
-      this.$http.get('/api/v1/desafio/grupo', { headers: {'X-No-Loading': 'true'} })
-        .then((response) => {
-          var resolvidos = JSON.stringify(response.data.desafios)
-          var resolvidosLocal = JSON.parse(localStorage.getItem('resolvidos'))
-
-          this.$global.resolvidos = JSON.parse(resolvidos)
-
-          if (resolvidosLocal && this.$global.resolvidos.length !== resolvidosLocal.length) {
-            this.showNotification()
-          }
-          localStorage.setItem('resolvidos', resolvidos)
-        })
-    },
     showNotification () {
       var notification = document.getElementsByClassName('notification')
       notification[0].classList.add('show')
@@ -49,18 +36,6 @@ Vue.mixin({
     closeNotification () {
       var notification = document.getElementsByClassName('notification')
       notification[0].classList.remove('show')
-    },
-    showPopup () {
-      window.scrollTo(0, 0)
-      this.closeNotification()
-      var popup = document.getElementsByClassName('popup-wrapper')
-      popup[0].classList.add('show')
-      document.body.classList.add('popup')
-    },
-    closePopup () {
-      var popup = document.getElementsByClassName('popup-wrapper')
-      popup[0].classList.remove('show')
-      document.body.classList.remove('popup')
     }
   }
 })

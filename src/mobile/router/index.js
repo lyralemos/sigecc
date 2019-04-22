@@ -83,6 +83,11 @@ export default new Router({
       path: '/fechado',
       name: 'Fechado',
       component: Fechado
+    },
+    {
+      path: '/foto',
+      name: 'foto',
+      component: () => import('@/mobile/components/Foto.vue')
     }
   ]
 })

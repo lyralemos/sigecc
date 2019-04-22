@@ -4,39 +4,63 @@
         "pk":1,
         "fields":{
             "nome":"Conseguir o primeiro acerto",
-            "pontos":3
+            "pontos":1
         }
     },
     {
         "model":"core.desafio",
         "pk":2,
         "fields":{
-            "nome":"Conseguir 3 acertos em sequ\u00eancia",
-            "pontos":5
+            "nome":"Atingir 2 acertos.",
+            "pontos":2
         }
     },
     {
         "model":"core.desafio",
         "pk":3,
         "fields":{
-            "nome":"Conseguir 5 acertos",
-            "pontos":7
+            "nome":"Atingir 3 acertos",
+            "pontos":3
         }
     },
     {
         "model":"core.desafio",
         "pk":4,
         "fields":{
-            "nome":"Terminar todas as quest\u00f5es",
-            "pontos":10
+            "nome":"Atingir 5 acertos",
+            "pontos":5
         }
     },
     {
         "model":"core.desafio",
         "pk":5,
         "fields":{
-            "nome":"Responder o question\u00e1rio final",
-            "pontos":15
+            "nome":"Atingir 8 acertos",
+            "pontos":8
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":6,
+        "fields":{
+            "nome":"Atingir 13 acertos",
+            "pontos":13
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":7,
+        "fields":{
+            "nome":"Atingir 21 acertos",
+            "pontos":21
+        }
+    },
+    {
+        "model":"core.desafio",
+        "pk":8,
+        "fields":{
+            "nome":"Atingir 34 acertos",
+            "pontos":34
         }
     }
 ]

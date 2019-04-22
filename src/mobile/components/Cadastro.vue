@@ -80,7 +80,7 @@
         }).then((response) => {
           var token = response.data.token
           localStorage.setItem('user-token', token)
-          this.$router.push('/perfil')
+          this.$router.push('/espera')
         }).catch((err) => {
           this.errors = err.data.errors
         })
