@@ -128,7 +128,11 @@ class GrupoViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=False)
     def status(self, request):
-        return Response({'grupo': GrupoSerializer(request.user.aluno.grupo).data})
+        data = {
+            'aluno': request.user.aluno.pk,
+            'grupo': GrupoSerializer(request.user.aluno.grupo).data
+        }
+        return Response(data)
 
     @action(methods=['get'], detail=False)
     def respondido(self, request):

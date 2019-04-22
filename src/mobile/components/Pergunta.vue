@@ -1,7 +1,7 @@
 <template>
   <section class="main">
     <Progressao />
-    <div class="row">
+    <div class="row" v-if="!mostra_grupo">
       <div class="col s12" v-if="questao && !resultado">
         <template v-if="aluno === respondedor.id">
           <h5>Questão:</h5>
@@ -46,7 +46,7 @@
         </template>
         <template v-if="aluno !== respondedor.id">
           <div style="text-align: center">
-            <img src="@/assets/hands-helping-solid.svg" alt="">
+            <img style="max-width:250px" src="@/assets/hands-helping-solid.svg" alt="">
             <h5>Ajude a {{respondedor.nome}} responder a próxima questão.</h5>
           </div>
         </template>
@@ -70,8 +70,19 @@
         </div>
       </div>
     </div>
+    <div v-if="mostra_grupo">
+      <h5>Conheça o seu grupo:</h5>
+      <ul class="grupo" v-if="grupo_questao">
+        <li v-for="aluno in grupo_questao.grupo.aluno_set" :key="aluno">{{aluno}}</li>
+      </ul>
+
+      <h6>Vocês deverão colaborar para realizar as atividades, portanto se aproximem.</h6>
+
+      <button class="btn" @click="mostra_grupo = false">Continuar</button>
+    </div>
     <Placar v-if="$global.competicao == true" ref="placar"></Placar>
   </section>
+  
 </template>
 
 <script>
@@ -96,7 +107,7 @@
         acerto: null,
         status: null,
         intervalo: null,
-        retries: 0
+        mostra_grupo: this.$global.colaboracao
       }
     },
     methods: {
@@ -111,7 +122,6 @@
         this.resultado = null
         this.acerto = null
         this.status = null
-        this.retries = 0
       },
       getQuestao: function () {
         this.resetData()
@@ -124,14 +134,18 @@
             this.pergunta = this.questao.pergunta
             this.respondedor = response.data.grupo_questao.respondedor
 
+            // if (this.grupo_questao.grupo.aluno_set.length !== 1) {
+            //   this.mostra_grupo = false
+            // }
+
             if (this.aluno !== this.respondedor.id) {
               // loop que verifica se questao foi respondida
               this.getStatus()
             }
             this.$root.$emit('sigecc:update')
           })
-          .catch(() => {
-            // console.log(err)
+          .catch((err) => {
+            console.log(err)
             this.$router.push('/flow')
           })
       },
@@ -243,6 +257,18 @@
 
   .popup .body{
     padding: 15px;
+  }
+
+  .grupo{
+    border: 1px solid #cecece;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+  }
+  .grupo li{
+    display: block;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 20px;
   }
 
 </style>

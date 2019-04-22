@@ -66,9 +66,11 @@ class ModuloSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SimpleGrupoSerializer(serializers.ModelSerializer):
+    aluno_set = serializers.StringRelatedField(many=True)
+
     class Meta(object):
         model = Grupo
-        fields = ('id','__str__', 'foto')
+        fields = ('id','__str__', 'foto', 'aluno_set')
 
 
 class PlacarSerializer(serializers.ModelSerializer):
@@ -123,6 +125,7 @@ class GrupoSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField()
     desafios = serializers.SerializerMethodField()
     proximo_desafio = serializers.SerializerMethodField()
+    fotografo = AlunoSerializer()
 
     def get_questao(self, obj):
         return obj.questao.pk
@@ -141,13 +144,15 @@ class GrupoSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Grupo
-        fields = ('id', '__str__', 'aluno_set', 'nome', 'modulo', 'questao', 'pontos', 'total', 'desafios', 'proximo_desafio')
+        fields = ('id', '__str__', 'aluno_set', 'nome', 'modulo', 'questao', 
+            'pontos', 'total', 'desafios', 'proximo_desafio', 'foto', 'fotografo')
 
 
 class GrupoQuestaoSerializer(serializers.ModelSerializer):
     # grupo = GrupoSerializer()
     questao = QuestaoSerializer()
     respondedor = AlunoSerializer()
+    grupo = SimpleGrupoSerializer()
 
     class Meta(object):
         model = GrupoQuestao

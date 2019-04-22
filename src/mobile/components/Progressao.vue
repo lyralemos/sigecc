@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     update () {
-      this.$http.get('/api/v1/grupos/status')
+      this.$http.get('/api/v1/grupos/status/')
         .then(response => {
           this.grupo = response.data.grupo
           this.desafios = this.grupo.desafios

@@ -1,5 +1,5 @@
 <template>
-  <section class="centered">
+  <section>
     <div class="placar">
       <div class="step">
         <div class="space"></div>

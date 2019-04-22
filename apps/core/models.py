@@ -37,8 +37,10 @@ class Modulo(models.Model):
             QTD = 3 if self.colaboracao == True else 1
             alunos = self.aluno_set.order_by('?').values_list('pk',flat=True)
             for g in list(chunks(alunos,QTD)):
-                grupo = Grupo.objects.create(modulo = self, quantidade=QTD)
-                Aluno.objects.filter(pk__in=g).update(grupo=grupo)
+                alunos = Aluno.objects.filter(pk__in=g)
+                fotografo = alunos.order_by('?').first()
+                grupo = Grupo.objects.create(modulo = self, quantidade=QTD, fotografo=fotografo)
+                alunos.update(grupo=grupo)
                 grupo.atribuir()
             self.liberado = True;
             self.save()
@@ -107,6 +109,7 @@ class Grupo(models.Model):
     acertos = models.IntegerField(default=0)
     sequencia = models.IntegerField(default=0)
     foto = models.ImageField(upload_to='fotos/%Y/%m/%d/', null=True)
+    fotografo = models.ForeignKey(Aluno, related_name="fotografo", on_delete=models.CASCADE, blank=True, null=True)
 
     @property
     def questao(self):
@@ -177,7 +180,7 @@ class Grupo(models.Model):
         nomes = list(self.aluno_set.values_list('nome', flat=True))
         nomes = [i.split(' ')[0] for i in nomes]
         if len(nomes) > 1:
-            return '{}, e {}'.format(', '.join(nomes[:-1]), nomes[-1])
+            return '{} e {}'.format(', '.join(nomes[:-1]), nomes[-1])
         return ','.join(nomes)
 
 

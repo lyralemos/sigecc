@@ -43,8 +43,8 @@
     },
     beforeDestroy () {
       clearInterval(this.intervalo_placar)
-      var main = document.getElementsByClassName('main')
-      main[0].classList.remove('competicao')
+      // var main = document.getElementsByClassName('main')
+      // main[0].classList.remove('competicao')
     },
     methods: {
       getPlacar: function () {
@@ -53,11 +53,14 @@
           .then((response) => {
             this.placar = response.data
             setTimeout(function () {
-              var selectedPosition = document.querySelector('li.selected').getBoundingClientRect()
-              if (selectedPosition.x > 400 || selectedPosition.x < 0) {
-                document.querySelector('.placar ul').scroll(selectedPosition.x, 0)
+              var selected = document.querySelector('li.selected')
+              if (selected) {
+                var selectedPosition = selected.getBoundingClientRect()
+                if (selectedPosition.x > 400 || selectedPosition.x < 0) {
+                  document.querySelector('.placar ul').scroll(selectedPosition.x, 0)
+                }
               }
-            }, 100)
+            }, 1000)
           })
           .catch((err) => {
             console.log(err)

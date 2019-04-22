@@ -1,18 +1,29 @@
 <template>
-  <section class="centered center">
-    <h5 v-if="!$global.colaboracao">Escolha uma foto para você</h5>
-    <h5 v-if="$global.colaboracao">Escolha uma foto para o seu grupo</h5>
+  <section class="centered center" v-if="grupo && aluno">
+    <div v-if="aluno === grupo.fotografo.id">
+      <h5 v-if="!$global.colaboracao">Escolha uma foto para você</h5>
+      <h5 v-if="$global.colaboracao">Escolha uma foto para o seu grupo</h5>
 
-    <canvas ref="canvas" id="canvas" width="240" height="240"></canvas>
-    <input class="image-input" ref="capture" @change="loadPicture" type="file" accept="image/*" capture>
-    
-    <div v-if="picture">
-      <img class="circle" ref="picture" :src="picture"  /><br /><br />
-      <button type="button" class="btn" @click="save">Salvar</button> <br /><br />
+      <canvas ref="canvas" id="canvas" width="240" height="240"></canvas>
+      <input class="image-input" ref="capture" @change="loadPicture" type="file" accept="image/*" capture>
+      
+      <div v-if="picture">
+        <img class="circle" ref="picture" :src="picture"  /><br /><br />
+        <button type="button" class="btn" @click="save">
+          <i class="inline-icon material-icons">save</i> Salvar
+        </button> 
+        <button type="button" class="btn" @click="rotate">
+          <i class="inline-icon material-icons">rotate_left</i> Girar
+        </button> 
+        <br /><br />
+      </div>
+      <button class="btn" @click="abrirCamera">
+        <i class="inline-icon material-icons">camera_alt</i> Tirar foto
+      </button>
     </div>
-    <button class="btn" @click="abrirCamera">
-      <i class="material-icons">camera_alt</i>
-    </button>
+    <div v-if="aluno !== grupo.fotografo.id">
+      <h5>Ajude {{grupo.fotografo.nome}} a tirar a foto do seu grupo.</h5>
+    </div>
   </section>
 </template>
 
@@ -24,7 +35,9 @@ export default {
       video: null,
       canvas: {},
       captures: [],
-      picture: null
+      picture: null,
+      aluno: null,
+      grupo: {}
     }
   },
   methods: {
@@ -74,21 +87,32 @@ export default {
       }
       reader.readAsDataURL(file)
     },
-    start () {
-      this.picture = null
-      // this.video = document.getElementById('video')
-      // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      //   navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-      //     this.video.srcObject = stream
-      //   })
-      // }
-    },
     stop () {
       this.video.srcObject.getTracks().forEach(track => track.stop())
       this.video.srcObject = null
     },
     abrirCamera () {
       this.$refs.capture.click()
+    },
+    rotate () {
+      var self = this
+      var canvas = document.createElement('canvas')
+      var ctx = canvas.getContext('2d')
+
+      var image = new Image()
+      image.onload = function (e) {
+        canvas.width = image.height
+        canvas.height = image.width
+
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.rotate(90 * Math.PI / 180)
+        ctx.translate(-canvas.width / 2, -canvas.height / 2)
+
+        ctx.drawImage(image, 0, 0)
+
+        self.picture = canvas.toDataURL('image/png')
+      }
+      image.src = this.picture
     },
     save () {
       this.$http.patch('/api/v1/grupos/foto/', {foto: this.picture})
@@ -97,10 +121,25 @@ export default {
             this.$router.push('/espera')
           }
         })
+    },
+    loadGrupo () {
+      this.$http.get('/api/v1/grupos/status/')
+        .then((response) => {
+          this.aluno = response.data.aluno
+          this.grupo = response.data.grupo
+
+          if (!this.grupo.foto) {
+            setTimeout(function () {
+              this.loadGrupo()
+            }.bind(this), 2000)
+          } else {
+            this.$router.push('/pergunta')
+          }
+        })
     }
   },
   mounted () {
-    this.start()
+    this.loadGrupo()
   }
 }
 </script>
@@ -126,6 +165,11 @@ li {
 
 .image-input {
   display:none;
+}
+
+.inline-icon {
+   vertical-align: bottom;
+   font-size: 18px !important;
 }
 
 
