@@ -1,23 +1,18 @@
 <template>
   <section class="centered center">
-    <h5 v-if="!$global.colaboracao">Escolha uma imagem para você</h5>
-    <h5 v-if="$global.colaboracao">Escolha uma imagem para o seu grupo</h5>
-    <div class="capture" v-if="!picture">
-      <div class="video-wrapper">
-        <video ref="video" id="video" autoplay></video>
-      </div>
-      <div class="center">
-        <button type="button" class="btn" id="snap" @click="capture()">
-          <i class="material-icons">camera_alt</i>
-        </button>
-      </div>
-    </div>
+    <h5 v-if="!$global.colaboracao">Escolha uma foto para você</h5>
+    <h5 v-if="$global.colaboracao">Escolha uma foto para o seu grupo</h5>
+
     <canvas ref="canvas" id="canvas" width="240" height="240"></canvas>
+    <input class="image-input" ref="capture" @change="loadPicture" type="file" accept="image/*" capture>
+    
     <div v-if="picture">
       <img class="circle" ref="picture" :src="picture"  /><br /><br />
       <button type="button" class="btn" @click="save">Salvar</button> <br /><br />
-      <button type="button" class="btn" @click="$router.go()">Outra foto</button>
     </div>
+    <button class="btn" @click="abrirCamera">
+      <i class="material-icons">camera_alt</i>
+    </button>
   </section>
 </template>
 
@@ -33,55 +28,67 @@ export default {
     }
   },
   methods: {
-    snapshotResize: function (video, width, height) {
-      var canvas = this.$refs.canvas
-      var ctx = canvas.getContext('2d')
-      var xStart = 0
-      var yStart = 0
-      var aspectRadio
-      var newWidth
-      var newHeight
+    loadPicture (evt) {
+      var self = this
+      var file = evt.target.files[0]
+      var img = document.createElement('img')
+      var reader = new FileReader()
 
-      // video.src  = srcData;
-      canvas.width = width
-      canvas.height = height
+      reader.onload = function (e) {
+        img.onload = function (e) {
+          var xStart = 0
+          var yStart = 0
+          var aspectRadio
+          var newWidth
+          var newHeight
+          var canvas = self.$refs.canvas
+          var ctx = canvas.getContext('2d')
+          // ctx.drawImage(img, 0, 0)
 
-      aspectRadio = video.videoHeight / video.videoWidth
+          var width = 240
+          var height = 240
 
-      if (video.videoHeight < video.videoWidth) {
-        // horizontal
-        aspectRadio = video.videoWidth / video.videoHeight
-        newHeight = height
-        newWidth = aspectRadio * height
-        xStart = -(newWidth - width) / 2
-      } else {
-        // vertical
-        newWidth = width
-        newHeight = aspectRadio * width
-        yStart = -(newHeight - height) / 2
+          canvas.width = width
+          canvas.height = height
+
+          aspectRadio = img.height / img.width
+
+          if (img.height < img.width) {
+            // horizontal
+            aspectRadio = img.width / img.height
+            newHeight = height
+            newWidth = aspectRadio * height
+            xStart = -(newWidth - width) / 2
+          } else {
+            // vertical
+            newWidth = width
+            newHeight = aspectRadio * width
+            yStart = -(newHeight - height) / 2
+          }
+
+          ctx.drawImage(img, xStart, yStart, newWidth, newHeight)
+
+          self.picture = canvas.toDataURL('image/png', 0.75)
+        }
+        img.src = e.target.result
       }
-
-      ctx.drawImage(video, xStart, yStart, newWidth, newHeight)
-
-      return canvas.toDataURL('image/png', 0.75)
-    },
-    capture () {
-      this.canvas = this.$refs.canvas
-      this.picture = this.snapshotResize(this.video, 240, 240)
-      this.stop()
+      reader.readAsDataURL(file)
     },
     start () {
       this.picture = null
-      this.video = document.getElementById('video')
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-          this.video.srcObject = stream
-        })
-      }
+      // this.video = document.getElementById('video')
+      // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      //   navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      //     this.video.srcObject = stream
+      //   })
+      // }
     },
     stop () {
       this.video.srcObject.getTracks().forEach(track => track.stop())
       this.video.srcObject = null
+    },
+    abrirCamera () {
+      this.$refs.capture.click()
     },
     save () {
       this.$http.patch('/api/v1/grupos/foto/', {foto: this.picture})
@@ -115,6 +122,10 @@ li {
 
 .circle {
   border-radius: 50%;
+}
+
+.image-input {
+  display:none;
 }
 
 
