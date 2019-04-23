@@ -67,7 +67,7 @@ export default {
           this.proximo_desafio = this.grupo.proximo_desafio
           this.porcentagem = (this.grupo.pontos * 100) / this.grupo.total
 
-          if (this.$global.proximo_desafio !== this.proximo_desafio.id) {
+          if (this.$global.proximo_desafio !== this.proximo_desafio.id && this.grupo.questao) {
             this.$root.$emit('sigecc:popup:open', 'Novo desafio!!', this.proximo_desafio.nome, this.proximo_desafio.pontos)
             this.$global.proximo_desafio = this.proximo_desafio.id
           }

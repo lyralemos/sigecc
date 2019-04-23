@@ -1,31 +1,34 @@
 <template>
   <section>
-    <div class="placar">
-      <div class="step">
-        <div class="space"></div>
-        <div class="segundo" v-if="segundo">
-          <img class="circle" :src="segundo.grupo.foto" alt="" v-if="segundo.grupo.foto">
-          <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!segundo.grupo.foto">
-          <span>{{segundo.grupo.__str__}}</span>
-          <span class="posicao">2º</span>
+    <div>
+      <h5>Melhores até o momento</h5>
+      <div class="podio" v-if="$global.competicao">
+        <div class="step">
+          <div class="space"></div>
+          <div class="segundo" v-if="segundo">
+            <img class="circle" :src="segundo.grupo.foto" alt="" v-if="segundo.grupo.foto">
+            <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!segundo.grupo.foto">
+            <span>{{segundo.grupo.__str__}}</span>
+            <span class="posicao">2º</span>
+          </div>
         </div>
-      </div>
-      <div class="step">
-        <div class="space"></div>
-        <div class="primeiro" v-if="primeiro">
-          <img class="circle" :src="primeiro.grupo.foto" alt="" v-if="primeiro.grupo.foto">
-          <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!primeiro.grupo.foto">
-          <span>{{primeiro.grupo.__str__}}</span>
-          <span class="posicao">1º</span>
+        <div class="step">
+          <div class="space"></div>
+          <div class="primeiro" v-if="primeiro">
+            <img class="circle" :src="primeiro.grupo.foto" alt="" v-if="primeiro.grupo.foto">
+            <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!primeiro.grupo.foto">
+            <span>{{primeiro.grupo.__str__}}</span>
+            <span class="posicao">1º</span>
+          </div>
         </div>
-      </div>
-      <div class="step">
-        <div class="space"></div>
-        <div class="terceiro" v-if="terceiro">
-          <img class="circle" :src="terceiro.grupo.foto" alt="" v-if="terceiro.grupo.foto">
-          <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!terceiro.grupo.foto">
-          <span>{{terceiro.grupo.__str__}}</span>
-          <span class="posicao">3º</span>
+        <div class="step">
+          <div class="space"></div>
+          <div class="terceiro" v-if="terceiro">
+            <img class="circle" :src="terceiro.grupo.foto" alt="" v-if="terceiro.grupo.foto">
+            <img class="circle" src="@/assets/desconhecido.png" alt="" v-if="!terceiro.grupo.foto">
+            <span>{{terceiro.grupo.__str__}}</span>
+            <span class="posicao">3º</span>
+          </div>
         </div>
       </div>
     </div>
@@ -118,6 +121,9 @@
             this.primeiro = this.placar[0]
             this.segundo = this.placar[1]
             this.terceiro = this.placar[2]
+            setTimeout(function () {
+              this.getPlacar()
+            }.bind(this), 2000)
           })
       }
     },
@@ -165,7 +171,7 @@
     background-color: #cecece;
     padding: 10px 15px;
     border-radius: 20px;
-    margin-top:20px;
+    margin:20px 0;
   }
 
   .desafios table{
@@ -182,7 +188,7 @@
     text-decoration: line-through;
   }
 
-  .placar{
+  .podio{
     margin: 0 auto;
     display: flex;
     height: 250px;
@@ -208,12 +214,26 @@
     padding: 10px;
     text-align: center;
     color: #fff;
+    animation: transition .4s ease;
+  }
+  @keyframes transition {
+    from {
+      max-height: 0;
+      opacity: 0;
+    }
+    to {
+      max-height: 100%;
+      opacity: 1;
+    }
+  }
+  .step.hidden{
+    height: 0;
+    opacity: 0;
   }
 
   .primeiro{
     height: 90%;
     background-color: #46A69A;
-    
   }
 
   .segundo{

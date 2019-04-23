@@ -41,13 +41,15 @@ class DesafioGrupoAdmin(admin.ModelAdmin):
 class RespostaFlowAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'aluno')
 
+class PlacarAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'grupo')
 
 admin.site.register(Modulo, ModuloAdmin)
 admin.site.register(Aluno, AlunoAdmin)
 admin.site.register(PerfilPergunta)
 admin.site.register(PerfilResposta)
 admin.site.register(Grupo, GrupoAdmin)
-admin.site.register(Placar)
+admin.site.register(Placar, PlacarAdmin)
 admin.site.register(Questao, QuestaoAdmin)
 admin.site.register(Pergunta, PerguntaAdmin)
 admin.site.register(GrupoQuestao, GrupoQuestaoAmdin)

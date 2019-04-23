@@ -144,8 +144,8 @@
             }
             this.$root.$emit('sigecc:update')
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
+            // console.log(err)
             this.$router.push('/flow')
           })
       },

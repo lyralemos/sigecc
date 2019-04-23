@@ -1,6 +1,6 @@
 <template lang="html">
   <section class="centered">
-    <img src="@/assets/clock-regular.svg" />
+    <img src="@/assets/clock-regular.svg" style="max-width:300px" />
     <h5 v-if="$global.competicao">Aguardando os seus oponentes.</h5>
     <h5 v-if="!$global.competicao">Aguardando os seus colegas.</h5>
   </section>

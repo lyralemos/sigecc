@@ -36,7 +36,11 @@
             this.$router.push('/pergunta')
           }
         } else {
-          this.$router.push('/cadastro')
+          if (!localStorage.getItem('user-token')) {
+            this.$router.push('/cadastro')
+          } else {
+            this.$router.push('/espera')
+          }
         }
         // var status = localStorage.getItem('status') || '/perfil'
         // this.$router.push(status)
