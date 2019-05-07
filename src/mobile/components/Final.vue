@@ -1,8 +1,9 @@
 <template>
   <section>
-    <div>
-      <h5>Melhores até o momento</h5>
-      <div class="podio" v-if="$global.competicao">
+    <div v-if="$global.competicao">
+      <h5 v-if="!finalizado">Melhores até o momento</h5>
+      <h5 v-if="finalizado">Resultado final</h5>
+      <div class="podio" >
         <div class="step">
           <div class="space"></div>
           <div class="segundo" v-if="segundo">
@@ -79,6 +80,7 @@
         primeiro: null,
         segundo: null,
         terceiro: null,
+        finalizado: false,
         niveis: {
           'Novato': 1,
           'Iniciante': 2,
@@ -115,15 +117,27 @@
           })
       },
       getPlacar () {
-        this.$http.get('/api/v1/placar/')
+        this.$http.get('/api/v1/modulos/ativo')
           .then((response) => {
-            this.placar = response.data
+            this.finalizado = response.data.finalizado
+            this.placar = response.data.placar
             this.primeiro = this.placar[0]
             this.segundo = this.placar[1]
             this.terceiro = this.placar[2]
-            setTimeout(function () {
-              this.getPlacar()
-            }.bind(this), 2000)
+
+            var nopopup = Boolean(this.$route.query.nopopup)
+
+            if (this.finalizado) {
+              if (!nopopup) {
+                this.$root.$emit('sigecc:popup:open', 'Questionário de avaliação', 'Ajude o desenvolvimento da nossa pesquisa.', 0, function () {
+                  this.$router.push('/flow')
+                })
+              }
+            } else {
+              setTimeout(function () {
+                this.getPlacar()
+              }.bind(this), 2000)
+            }
           })
       }
     },

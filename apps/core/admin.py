@@ -23,7 +23,7 @@ class GrupoQuestaoAlunoInline(admin.TabularInline):
 
 
 class GrupoQuestaoAmdin(admin.ModelAdmin):
-    list_display = ('__str__', 'grupo', 'respondedor', 'resposta')
+    list_display = ('__str__', 'grupo', 'questao', 'respondedor', 'resposta')
 
 
 class AlunoAdmin(admin.ModelAdmin):
@@ -41,8 +41,14 @@ class DesafioGrupoAdmin(admin.ModelAdmin):
 class RespostaFlowAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'aluno')
 
+
 class PlacarAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'grupo')
+
+
+class PerguntaFlowAdmin(admin.ModelAdmin):
+    list_display = ('pk', '__str__')
+    ordering = ('pk',)
 
 admin.site.register(Modulo, ModuloAdmin)
 admin.site.register(Aluno, AlunoAdmin)
@@ -54,7 +60,7 @@ admin.site.register(Questao, QuestaoAdmin)
 admin.site.register(Pergunta, PerguntaAdmin)
 admin.site.register(GrupoQuestao, GrupoQuestaoAmdin)
 admin.site.register(GrupoQuestaoAluno)
-admin.site.register(PerguntaFlow)
+admin.site.register(PerguntaFlow, PerguntaFlowAdmin)
 admin.site.register(RespostaFlow, RespostaFlowAdmin)
 admin.site.register(Desafio)
 admin.site.register(DesafioGrupo, DesafioGrupoAdmin)

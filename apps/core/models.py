@@ -255,6 +255,9 @@ class PerguntaFlow(models.Model):
 
     def __str__(self):
         return self.pergunta
+    
+    class Meta(object):
+        ordering = ('id',)
 
 
 class RespostaFlow(models.Model):

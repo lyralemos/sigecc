@@ -29,7 +29,7 @@ class AlunoViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         try:
-            user = User.objects.create_user(request.data['cpf'],'fake@email.com',request.data['cpf'])
+            user = User.objects.create_user(request.data['cpf'],request.data['email'],request.data['cpf'])
         except IntegrityError:
             return Response({'errors':['Esse usuário já existe']}, status=status.HTTP_400_BAD_REQUEST)
         aluno = Aluno.objects.create(

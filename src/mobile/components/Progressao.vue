@@ -99,7 +99,7 @@ export default {
       // proximo desafio
       this.appendToList(list, this.proximo_desafio, false)
 
-      this.$root.$emit('sigecc:popup:open', 'Desafios realizados', list.outerHTML)
+      this.$root.$emit('sigecc:popup:open', 'Desafios', list.outerHTML)
     }
   },
   mounted () {

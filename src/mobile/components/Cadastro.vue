@@ -28,6 +28,14 @@
         </div>
 
         <div class="input-field col s12">
+          <input id="id_email"
+            type="email"
+            v-model="email"
+            required>
+          <label for="id_email">Email</label>
+        </div>
+
+        <div class="input-field col s12">
           <input id="id_nascimento"
             type="date"
             v-model="nascimento"
@@ -62,6 +70,7 @@
         cpf: null,
         nome: null,
         nascimento: null,
+        email: null,
         genero: '',
         errors: []
       }
@@ -76,7 +85,8 @@
           'cpf': this.cpf,
           'nome': this.nome,
           'nascimento': this.nascimento,
-          'genero': this.genero
+          'genero': this.genero,
+          email: this.email,
         }).then((response) => {
           var token = response.data.token
           localStorage.setItem('user-token', token)

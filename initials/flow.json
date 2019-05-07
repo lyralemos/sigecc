@@ -1,254 +1,254 @@
 [
-    {
-        "model":"core.perguntaflow",
-        "pk":1,
-        "fields":{
-            "pergunta":"Eu me sinto desafiado(a), mas acredito que minhas habilidades v\u00e3o me permitir enfrentar o desafio."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":2,
-        "fields":{
-            "pergunta":"Eu fa\u00e7o os movimentos corretos sem pensar em como faz\u00ea-los"
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":3,
-        "fields":{
-            "pergunta":"Eu sei exatamente o que quero fazer."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":4,
-        "fields":{
-            "pergunta":"\u00c9 muito claro para mim como est\u00e1 meu desempenho."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":5,
-        "fields":{
-            "pergunta":"Minha aten\u00e7\u00e3o fica completamente focada no que eu estou fazendo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":6,
-        "fields":{
-            "pergunta":"Eu tenho controle sobre o que eu estou fazendo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":7,
-        "fields":{
-            "pergunta":"Eu n\u00e3o me preocupo com o que os outros possam pensar sobre mim."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":8,
-        "fields":{
-            "pergunta":"O tempo parece se alterar. (mais lento ou mais depressa)."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":9,
-        "fields":{
-            "pergunta":"Eu realmente gosto da experi\u00eancia."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":10,
-        "fields":{
-            "pergunta":"Minhas habilidades correspondem ao alto desafio da situa\u00e7\u00e3o."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":11,
-        "fields":{
-            "pergunta":"As coisas parecem acontecer automaticamente."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":12,
-        "fields":{
-            "pergunta":"Eu tenho uma forte no\u00e7\u00e3o do que eu quero fazer."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":13,
-        "fields":{
-            "pergunta":"Eu estou consciente de qu\u00e3o bem eu estou me desempenhando."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":14,
-        "fields":{
-            "pergunta":"N\u00e3o \u00e9 esfor\u00e7o nenhum manter meu pensamento no que est\u00e1 acontecendo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":15,
-        "fields":{
-            "pergunta":"Eu sinto que eu posso controlar o que estou fazendo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":16,
-        "fields":{
-            "pergunta":"Eu n\u00e3o me preocupo com a forma como os outros podem estar me avaliando."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":17,
-        "fields":{
-            "pergunta":"A maneira que o tempo passa parece ser diferente do normal."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":18,
-        "fields":{
-            "pergunta":"Eu amo a sensa\u00e7\u00e3o de desempenho e quero senti-la novamente."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":19,
-        "fields":{
-            "pergunta":"Eu sinto que sou competente o bastante para atender \u00e0s altas exig\u00eancias da situa\u00e7\u00e3o."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":20,
-        "fields":{
-            "pergunta":"Eu realizo os movimentos automaticamente, sem pensar muito."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":21,
-        "fields":{
-            "pergunta":"Eu sei o que quero alcan\u00e7ar"
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":22,
-        "fields":{
-            "pergunta":"Eu tenho uma boa ideia sobre o qu\u00e3o bem estou indo enquanto executo o movimento."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":23,
-        "fields":{
-            "pergunta":"Eu tenho total concentra\u00e7\u00e3o."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":24,
-        "fields":{
-            "pergunta":"Eu tenho um sentimento de total controle."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":25,
-        "fields":{
-            "pergunta":"Eu n\u00e3o fico preocupado(a) com a forma como estou me apresentando."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":26,
-        "fields":{
-            "pergunta":"Parece que o tempo passa rapidamente."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":27,
-        "fields":{
-            "pergunta":"A experi\u00eancia me faz sentir muito bem"
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":28,
-        "fields":{
-            "pergunta":"Os desafios e as minhas habilidades est\u00e3o em um n\u00edvel igualmente alto."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":29,
-        "fields":{
-            "pergunta":"Eu fa\u00e7o coisas de maneira espont\u00e2nea e autom\u00e1tica, sem ter que pensar."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":30,
-        "fields":{
-            "pergunta":"Minhas metas est\u00e3o claramente definidas."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":31,
-        "fields":{
-            "pergunta":"Eu posso dizer, pela maneira como est\u00e1 meu desempenho, o qu\u00e3o bem eu estou indo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":32,
-        "fields":{
-            "pergunta":"Eu fico completamente focado(a) na tarefa em quest\u00e3o."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":33,
-        "fields":{
-            "pergunta":"Eu sinto que tenho controle total do meu corpo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":34,
-        "fields":{
-            "pergunta":"Eu n\u00e3o fico preocupado(a) com o que os outros podem pensar de mim"
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":35,
-        "fields":{
-            "pergunta":"Eu perco a minha consci\u00eancia normal do tempo."
-        }
-    },
-    {
-        "model":"core.perguntaflow",
-        "pk":36,
-        "fields":{
-            "pergunta":"A experi\u00eancia \u00e9 extremamente gratificante."
-        }
+  {
+    "model":"core.perguntaflow",
+    "pk":1,
+    "fields":{
+      "pergunta":"Fui desafiado, mas acredito que minhas habilidades me permitiriam enfrentar o desafio"
     }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":2,
+    "fields":{
+      "pergunta":"Fiz as coisas corretamente sem pensar em como fazer"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":3,
+    "fields":{
+      "pergunta":"Sabia claramente o que queria fazer"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":4,
+    "fields":{
+      "pergunta":"Estava muito claro para mim como eu estava me saindo na atividade"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":5,
+    "fields":{
+      "pergunta":"Minha aten\u00e7\u00e3o estava focada inteiramente no que eu estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":6,
+    "fields":{
+      "pergunta":"Tinha um senso de controle sobre o que estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":7,
+    "fields":{
+      "pergunta":"N\u00e3o estava preocupado com o que os outros podiam estar pensando de mim"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":8,
+    "fields":{
+      "pergunta":"O tempo pareceu estar alterado (mais lento ou mais acelerado)"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":9,
+    "fields":{
+      "pergunta":"Realmente curti a experi\u00eancia da atividade que estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":10,
+    "fields":{
+      "pergunta":"Minhas habilidades combinavam com o desafio da atividade que estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":11,
+    "fields":{
+      "pergunta":"As coisas pareciam estar acontecendo automaticamente"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":12,
+    "fields":{
+      "pergunta":"Estava consciente do qu\u00e3o bem eu estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":13,
+    "fields":{
+      "pergunta":"Estou ciente do qu\u00e3o bem estou fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":14,
+    "fields":{
+      "pergunta":"N\u00e3o me esforcei para manter a minha mente no que estava acontecendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":15,
+    "fields":{
+      "pergunta":"Senti que poderia controlar o que estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":16,
+    "fields":{
+      "pergunta":"N\u00e3o estava preocupado sobre como os outros podem ter me avaliado"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":17,
+    "fields":{
+      "pergunta":"A forma como o tempo passou parecia ser diferente do normal"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":18,
+    "fields":{
+      "pergunta":"Amei a sensa\u00e7\u00e3o que estava experimentando, e quero ter esse sentimento novamente"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":19,
+    "fields":{
+      "pergunta":"Senti que era competente o suficiente para atender \u00e0s demandas da situa\u00e7\u00e3o"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":20,
+    "fields":{
+      "pergunta":"Fiz coisas automaticamente, sem pensar muito"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":21,
+    "fields":{
+      "pergunta":"Eu sabia o que queria alcan\u00e7ar"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":22,
+    "fields":{
+      "pergunta":"Tive uma boa ideia sobre como estava me saindo na atividade quando estava envolvido nela"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":23,
+    "fields":{
+      "pergunta":"Tive total concentra\u00e7\u00e3o"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":24,
+    "fields":{
+      "pergunta":"Tive uma sensa\u00e7\u00e3o de total controle sobre o que estava fazendo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":25,
+    "fields":{
+      "pergunta":"N\u00e3o estava preocupado com a forma como estava me apresentando"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":26,
+    "fields":{
+      "pergunta":"Pareceu que o tempo passou rapidamente"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":27,
+    "fields":{
+      "pergunta":"A experi\u00eancia me deixou com uma \u00f3tima sensa\u00e7\u00e3o"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":28,
+    "fields":{
+      "pergunta":"O desafio e minhas habilidades estavam em um n\u00edvel igualmente alto"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":29,
+    "fields":{
+      "pergunta":"Fiz coisas automaticamente sem ter que pensar"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":30,
+    "fields":{
+      "pergunta":"Meus objetivos estavam claramente definidos"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":31,
+    "fields":{
+      "pergunta":"Eu poderia dizer, pela forma como as coisas estavam progredindo, qu\u00e3o bem eu estava indo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":32,
+    "fields":{
+      "pergunta":"Estava completamente focado na tarefa em quest\u00e3o"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":33,
+    "fields":{
+      "pergunta":"Eu me senti no total controle das minhas a\u00e7\u00f5es"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":34,
+    "fields":{
+      "pergunta":"Eu n\u00e3o estava preocupado com o que os outros podiam estar pensando de mim"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":35,
+    "fields":{
+      "pergunta":"Perdi a no\u00e7\u00e3o do tempo"
+    }
+  },
+  {
+    "model":"core.perguntaflow",
+    "pk":36,
+    "fields":{
+      "pergunta":"Achei a experi\u00eancia extremamente recompensadora"
+    }
+  }
 ]

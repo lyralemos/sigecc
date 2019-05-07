@@ -15,9 +15,9 @@
         <div class="info">
           <span class="nome">{{ p.grupo.__str__ }}</span>
           <div class="barra">
-            <div class="realizado"></div>
+            <div class="realizado" :style="{width: (p.pontos * 100) / p.grupo.total + '%'}"></div>
           </div>
-          <span class="pontos">({{p.pontos}} pts)</span>
+          <span class="pontos">({{p.pontos}} pts) - {{Math.ceil((p.pontos * 100) / p.grupo.total)}}%</span>
         </div>
       </li>
       </transition-group>
@@ -94,6 +94,7 @@
   /* padding: 0 20px; */
   height: 90px;
   overflow-y: auto;
+  transition: .2s all ease;
 }
 
 .placar .acao{
@@ -177,6 +178,7 @@
 .placar li.selected img{
   width: 50px;
   height: 50px;
+  border: 3px solid #19A59A;
 }
 
 .placar li.selected .posicao{

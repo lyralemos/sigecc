@@ -185,7 +185,7 @@
             // console.log(err)
             // se der erro aqui é porque não tem mais perguntas
             // redirecionando para flow
-            this.$router.push('/flow')
+            this.$router.push('/final')
           })
       }
     },

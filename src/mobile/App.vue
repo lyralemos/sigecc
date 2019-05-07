@@ -22,8 +22,8 @@
       <div class="body">
         <h3 class="title">{{popup_title}}</h3>
         <div class="message" v-html="popup_message">{{popup_message}}</div>
-        <div class="points" v-if="popup_points">{{popup_points}} pts</div>
-        <button class="btn" @click="popup=false">Continuar</button>
+        <div class="points" v-if="popup_points && $global.competicao">{{popup_points}} pts</div>
+        <button class="btn" @click="execPopUpAction()">Continuar</button>
       </div>
     </div>
   </div>
@@ -41,7 +41,8 @@
         popup: false,
         popup_title: null,
         popup_message: null,
-        popup_points: null
+        popup_points: null,
+        popup_action: null
       }
     },
     methods: {
@@ -55,15 +56,24 @@
             this.$global.competicao = response.data.competicao
             this.$global.colaboracao = response.data.colaboracao
           })
+      },
+      execPopUpAction () {
+        if (this.popup_action) {
+          this.popup_action()
+          this.popup = false
+        } else {
+          this.popup = false
+        }
       }
     },
     mounted () {
       this.start()
-      this.$root.$on('sigecc:popup:open', (title, message, points) => {
+      this.$root.$on('sigecc:popup:open', (title, message, points, action) => {
         this.popup = true
         this.popup_title = title
         this.popup_message = message
         this.popup_points = points
+        this.popup_action = action
       })
     }
   }

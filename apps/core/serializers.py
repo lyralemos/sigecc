@@ -67,10 +67,14 @@ class ModuloSerializer(serializers.ModelSerializer):
 
 class SimpleGrupoSerializer(serializers.ModelSerializer):
     aluno_set = serializers.StringRelatedField(many=True)
+    total = serializers.SerializerMethodField()
+
+    def get_total(self, obj):
+        return Desafio.objects.aggregate(Sum('pontos'))['pontos__sum']
 
     class Meta(object):
         model = Grupo
-        fields = ('id','__str__', 'foto', 'aluno_set')
+        fields = ('id','__str__', 'foto', 'aluno_set', 'total')
 
 
 class PlacarSerializer(serializers.ModelSerializer):
