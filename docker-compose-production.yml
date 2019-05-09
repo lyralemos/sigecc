@@ -7,8 +7,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./public:/code/public
-      - ./nginx/conf:/etc/nginx/conf.d
+      - public:/code/public
+      # - ./nginx/conf:/etc/nginx/conf.d
     depends_on:
       - web
   db:
@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./public:/code/public
+      - public:/code/public
     depends_on:
       - db
 
