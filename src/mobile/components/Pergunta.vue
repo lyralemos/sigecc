@@ -134,10 +134,6 @@
             this.pergunta = this.questao.pergunta
             this.respondedor = response.data.grupo_questao.respondedor
 
-            // if (this.grupo_questao.grupo.aluno_set.length !== 1) {
-            //   this.mostra_grupo = false
-            // }
-
             if (this.aluno !== this.respondedor.id) {
               // loop que verifica se questao foi respondida
               this.getStatus()
@@ -208,6 +204,8 @@
   h6{
     line-height: 22px;
     margin: 15px 0;
+    white-space: pre-line;
+    text-align: justify;
   }
 
   label{

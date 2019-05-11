@@ -33,7 +33,11 @@
           if (!localStorage.getItem('user-token')) {
             this.$router.push('/login')
           } else {
-            this.$router.push('/pergunta')
+            if (this.$global.competicao) {
+              this.$router.push('/foto')
+            } else {
+              this.$router.push('/pergunta')
+            }
           }
         } else {
           if (!localStorage.getItem('user-token')) {
@@ -42,8 +46,6 @@
             this.$router.push('/espera')
           }
         }
-        // var status = localStorage.getItem('status') || '/perfil'
-        // this.$router.push(status)
       }
     }
   }

@@ -1,5 +1,11 @@
 <template>
   <section class="centered center" v-if="grupo && aluno">
+    <template v-if="grupo.aluno_set.length">
+      <h5>Você faz parte do grupo:</h5>
+      <ul class="grupo" v-if="grupo">
+        <li v-for="aluno in grupo.aluno_set" :key="aluno">{{aluno}}</li>
+      </ul>
+    </template>
     <div v-if="aluno === grupo.fotografo.id">
       <h5 v-if="!$global.colaboracao">Escolha uma foto para você</h5>
       <h5 v-if="$global.colaboracao">Escolha uma foto para o seu grupo</h5>
@@ -22,7 +28,7 @@
       </button>
     </div>
     <div v-if="aluno !== grupo.fotografo.id">
-      <h5>Ajude {{grupo.fotografo.nome}} a tirar a foto do seu grupo.</h5>
+      <h5>{{grupo.fotografo.nome}} está tirando a foto do seu grupo.</h5>
     </div>
   </section>
 </template>
@@ -172,5 +178,16 @@ li {
    font-size: 18px !important;
 }
 
+.grupo{
+    border: 1px solid #cecece;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+  }
+  .grupo li{
+    display: block;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 20px;
+  }
 
 </style>

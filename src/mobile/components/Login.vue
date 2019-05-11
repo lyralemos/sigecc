@@ -53,7 +53,11 @@
             const token = response.data.token
             localStorage.setItem('user-token', token)
             if (this.$global.liberado) {
-              this.$router.push('/pergunta')
+              if (this.$global.competicao) {
+                this.$router.push('/foto')
+              } else {
+                this.$router.push('/pergunta')
+              }
             } else {
               this.$router.push('/espera')
             }

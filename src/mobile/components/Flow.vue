@@ -1,32 +1,7 @@
 <template lang="html">
   <section>
-    <div class="termo" v-if="!aceito">
-      <h5>Impacto da colaboração e competição na Experiência de Fluxo em Ambiente Educacional Gamificado.</h5>
-      <p style="text-align:justify">
-        Prezado(a) colaborador(a),<br />
-        Estamos realizando uma pesquisa com estudantes, com o propósito de conhecer a relação entre o estado de fluxo e ambientes gamificados com colaboração e competição. Para efetivação do estudo, gostaríamos de contar com sua colaboração respondendo a estes questionários.
-        Assim, solicitamos a sua colaboração para participar desta pesquisa, como também sua autorização para publicar os resultados deste estudo em revista científica. Esclarecemos que sua participação no estudo é totalmente voluntária e, portanto, você não é obrigado a fornecer as informações e/ou colaborar com as atividades solicitadas pelo pesquisador, podendo, a qualquer momento, desistir do mesmo. Caso discorde ou sinta-se constrangido em responder, você pode declinar da pesquisa no momento que preferir.
-        Asseguramos, ainda, o caráter anônimo e confidencial de todas as suas respostas. Nesta direção, antes de prosseguir, de acordo com o disposto nas resoluções 466/12 e 510/16 do Conselho Nacional de Saúde, faz-se necessário documentar seu consentimento.
-        Por fim, colocamo-nos à sua inteira disposição no endereço abaixo para esclarecer qualquer dúvida que necessite.
-      </p>
-      <p>
-        Universidade Federal de Alagoas, Instituto de Computação, Mestrado de Modelagem Computacional do Conhecimento, Campus A.C. Simões.<br />
-        Telefone para contato: (82) 988050081<br />
-        Atenciosamente.<br />
-        Alexandre Marinho Lemos Filho (mestrando)<br />
-        Prof. Dr. Ig Ibert Bittencourt (orientador)
-      </p>
-      <div>
-        <h5>Você aceita as condições do termo de Consentimento Livre e Esclarecido?</h5>
-        <div class="align-center">
-          <button class="btn" @click="aceitar">Sim</button>
-          <button class="btn">Não</button>
-        </div>
-        <br /><br />
-      </div>
-    </div>
     
-    <form acion="#" method="post" @submit="checkForm" v-if="aceito">
+    <form acion="#" method="post" @submit="checkForm">
       <p class="errors" v-if="errors.length">
         <b>Por favor corrija os seguintes erros</b>
         <ul>
@@ -35,7 +10,7 @@
       </p>
 
       <h5>
-        Escala de Estado de Fluxo
+        Por favor responda o questionário abaixo.
       </h5>
       <p style="text-align:justify">
         Por favor responda as seguintes questões em relação a sua experiência na atividade que você <b>acabou de concluir</b>. 

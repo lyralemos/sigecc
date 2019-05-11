@@ -4,7 +4,7 @@
       <p class="errors" v-if="errors.length">
         <b>Por favor corrija os seguintes erros</b>
         <ul>
-          <li v-for="error in errors">{{ error }}</li>
+          <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
         </ul>
       </p>
 
@@ -86,7 +86,7 @@
           'nome': this.nome,
           'nascimento': this.nascimento,
           'genero': this.genero,
-          email: this.email,
+          email: this.email
         }).then((response) => {
           var token = response.data.token
           localStorage.setItem('user-token', token)
