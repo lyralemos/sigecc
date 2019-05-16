@@ -1,6 +1,6 @@
 <template>
   <section class="centered center" v-if="grupo && aluno">
-    <template v-if="grupo.aluno_set.length">
+    <template v-if="grupo.aluno_set.length > 1">
       <h5>Você faz parte do grupo:</h5>
       <ul class="grupo" v-if="grupo">
         <li v-for="aluno in grupo.aluno_set" :key="aluno">{{aluno}}</li>
@@ -34,8 +34,11 @@
 </template>
 
 <script>
+import isLoggedMixin from '../loggedin'
+
 export default {
   name: 'Foto',
+  mixins: [isLoggedMixin],
   data: function () {
     return {
       video: null,
