@@ -23,6 +23,8 @@ export default {
         .then((response) => {
           if (response.data.liberado) {
             this.$global.liberado = response.data.liberado
+            this.$global.competicao = response.data.competicao
+            this.$global.colaboracao = response.data.colaboracao
             clearInterval(this.interval)
             if (this.$global.competicao) {
               this.$router.push('/foto')
