@@ -125,19 +125,9 @@
             this.segundo = this.placar[1]
             this.terceiro = this.placar[2]
 
-            var nopopup = Boolean(this.$route.query.nopopup)
-
-            if (this.finalizado) {
-              if (!nopopup) {
-                this.$root.$emit('sigecc:popup:open', 'Questionário de avaliação', 'Ajude o desenvolvimento da nossa pesquisa.', 0, function () {
-                  this.$router.push('/flow')
-                })
-              }
-            } else {
-              setTimeout(function () {
-                this.getPlacar()
-              }.bind(this), 2000)
-            }
+            setTimeout(function () {
+              this.getPlacar()
+            }.bind(this), 2000)
           })
       }
     },

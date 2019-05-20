@@ -68,7 +68,7 @@
 
         <div class="divider"></div>
       </div>
-      <button type="submit" class="btn">Enviar</button>
+      <button type="submit" class="btn" :disabled="btnDisabled">{{btnText}}</button>
     </form>
   </section>
 </template>
@@ -85,7 +85,9 @@ export default {
       respostas: {},
       perguntas: [],
       errors: [],
-      parabens: false
+      parabens: false,
+      btnText: 'Enviar',
+      btnDisabled: false
     }
   },
   methods: {
@@ -93,28 +95,31 @@ export default {
       this.$http.get('/api/v1/perguntas_flow/')
         .then((response) => {
           this.perguntas = response.data
-          // var message = `Você chegou ao final das perguntas. <br />
-          // Por favor responda o questionário a seguir para avaliar a sua experiência.`
-          // this.$root.$emit('sigecc:popup:open', 'Parabéns!!', message)
         })
         .catch(() => {
-          this.$router.push('/final?nopopup=true')
+          this.$router.push('/final')
         })
     },
     checkForm: function (e) {
       this.errors = []
+      this.btnText = 'Enviando...'
+      this.btnDisabled = true
       if (Object.keys(this.respostas).length !== 36) {
         this.errors.push('Responda todas as perguntas da avaliação')
+        window.scrollTo(0, 0)
       } else {
         this.$http.post('/api/v1/alunos/flow/', {
           'respostas': this.respostas
         }).then((response) => {
           if (response.data.result === true) {
-            this.$router.push('/final?nopopup=true')
+            this.$router.push('/final')
           }
+        }).catch(() => {
+          this.errors.push('Ocorreu um erro.')
+          this.btnText = 'Enviar'
+          this.btnDisabled = false
         })
       }
-      window.scrollTo(0, 0)
       e.preventDefault()
     },
     change: function (id, value) {
@@ -122,10 +127,6 @@ export default {
     },
     checkSelected: function (id, value) {
       return this.respostas[id] === value
-    },
-    aceitar () {
-      this.aceito = true
-      window.scrollTo(0, 0)
     }
   },
   mounted: function () {
