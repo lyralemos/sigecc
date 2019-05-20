@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import *
 
 class ModuloAdmin(admin.ModelAdmin):
-    list_display = ('__str__','colaboracao', 'competicao', 'ativo', 'liberado')
+    list_display = ('__str__','colaboracao', 'competicao', 'ativo', 'liberado', 'finalizado')
 
 
 class QuestaoAdmin(admin.ModelAdmin):
