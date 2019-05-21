@@ -62,7 +62,7 @@ class AlunoViewSet(viewsets.ModelViewSet):
                 pergunta_id = pergunta,
                 resposta = resposta
             )
-        DesafioGrupo.objects.create(grupo=aluno.grupo, desafio_id=5)
+        # DesafioGrupo.objects.create(grupo=aluno.grupo, desafio_id=5)
         return Response({'result':True})
 
 
