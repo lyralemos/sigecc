@@ -14,9 +14,11 @@
           <input id="id_cpf"
             type="text"
             v-model="cpf"
+            ref="cpf"
+            @blur="isValid()"
             required>
           <label for="id_cpf">Usuário</label>
-          <span class="helper-text" data-error="wrong" data-success="right">Sugestão: use sua matrícula</span>
+          <span class="helper-text" data-error="Usuário inválido. Use somente letras e números" data-success="right">Sugestão: use sua matrícula</span>
         </div>
 
         <div class="input-field col s12">
@@ -81,21 +83,36 @@
     methods: {
       checkForm: function (e) {
         this.errors = []
-        this.$http.post('/api/v1/alunos/', {
-          'cpf': this.cpf,
-          'nome': this.nome,
-          'nascimento': this.nascimento,
-          'genero': this.genero,
-          email: this.email
-        }).then((response) => {
-          var token = response.data.token
-          localStorage.setItem('user-token', token)
-          this.$router.push('/espera')
-        }).catch((err) => {
-          this.errors = err.data.errors
-        })
-        window.scrollTo(0, 0)
+        if (this.isValid()) {
+          this.$http.post('/api/v1/alunos/', {
+            'cpf': this.cpf,
+            'nome': this.nome,
+            'nascimento': this.nascimento,
+            'genero': this.genero,
+            email: this.email
+          }).then((response) => {
+            var token = response.data.token
+            localStorage.setItem('user-token', token)
+            this.$router.push('/espera')
+          }).catch((err) => {
+            this.errors = err.data.errors
+            window.scrollTo(0, 0)
+          })
+        } else {
+          this.errors.push('Verifique os erros para continuar')
+        }
         e.preventDefault()
+      },
+      isValid: function (evt) {
+        if (this.cpf !== '') {
+          if (/[^A-Za-z\d]/.test(this.cpf)) {
+            this.$refs.cpf.classList.add('invalid')
+            return false
+          } else {
+            this.$refs.cpf.classList.remove('invalid')
+            return true
+          }
+        }
       }
     }
   }
