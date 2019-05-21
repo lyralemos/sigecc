@@ -196,7 +196,7 @@ class Placar(models.Model):
         return str(self.pontos)
 
     class Meta(object):
-        ordering = ('-pontos',)
+        ordering = ('-pontos','-grupo__acertos')
 
 
 class Questao(models.Model):
