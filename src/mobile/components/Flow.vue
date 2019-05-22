@@ -106,6 +106,8 @@ export default {
       this.btnDisabled = true
       if (Object.keys(this.respostas).length !== 36) {
         this.errors.push('Responda todas as perguntas da avaliação')
+        this.btnText = 'Enviar'
+        this.btnDisabled = false
         window.scrollTo(0, 0)
       } else {
         this.$http.post('/api/v1/alunos/flow/', {
