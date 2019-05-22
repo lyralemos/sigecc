@@ -107,6 +107,7 @@
         acerto: null,
         status: null,
         intervalo: null,
+        error_count: 0,
         mostra_grupo: this.$global.colaboracao
       }
     },
@@ -141,8 +142,12 @@
             this.$root.$emit('sigecc:update')
           })
           .catch(() => {
-            // console.log(err)
-            this.$router.push('/flow')
+            if (this.error_count > 1) {
+              this.$router.push('/flow')
+            } else {
+              this.error_count++
+              this.getQuestao()
+            }
           })
       },
       responder: function () {
@@ -181,7 +186,7 @@
             // console.log(err)
             // se der erro aqui é porque não tem mais perguntas
             // redirecionando para flow
-            this.$router.push('/final')
+            // this.$router.push('/final')
           })
       }
     },
