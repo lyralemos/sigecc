@@ -1,5 +1,5 @@
 <template>
-  <section class="centered center" v-if="grupo && aluno">
+  <section class="center" v-if="grupo && aluno">
     <template v-if="grupo.aluno_set.length > 1">
       <h5>Você faz parte do grupo:</h5>
       <ul class="grupo" v-if="grupo">
