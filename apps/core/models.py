@@ -133,7 +133,7 @@ class Grupo(models.Model):
         GrupoQuestao = apps.get_model('core', 'GrupoQuestao')
         Modulo = apps.get_model('core', 'Modulo')
 
-        GrupoQuestao.objects.filter(grupo=self).update(ativo=False)
+        # GrupoQuestao.objects.filter(grupo=self).update(ativo=False)
 
         # Só sorteia se o modulo não estiver finalizado
         if not self.modulo.finalizado:
@@ -237,6 +237,12 @@ class GrupoQuestao(models.Model):
     def atribuir(self):
         self.respondedor = self.grupo.aluno_set.order_by('?').first()
         self.save()
+    
+
+    def save(self, *args, **kwars):
+        if self.resposta:
+            self.ativo = False
+        super(GrupoQuestao, self).save(*args, **kwars)
 
 
 class GrupoQuestaoAluno(models.Model):

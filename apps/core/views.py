@@ -137,9 +137,22 @@ class GrupoViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     def respondido(self, request):
         gq = GrupoQuestao.objects.get(pk=request.query_params['id'])
-        # gq = GrupoQuestao.objects.get(grupo=request.user.aluno.grupo, ativo=True)
+        grupo = request.user.aluno.grupo
+            
         if gq.resposta:
-            return Response({'result': True})
+            try:
+                nova_questao = GrupoQuestao.objects.get(grupo=grupo, ativo=True)
+                return Response({'result': True})
+            except GrupoQuestao.DoesNotExist:
+                total = Pergunta.objects.count()
+                respondidos = GrupoQuestao.objects.filter(grupo=grupo, ativo=False).count()
+
+                if total == respondidos:
+                    return Response({'result': True})
+                if request.user.aluno.modulo.finalizado:
+                    return Response({'result': True})
+                    
+                return Response({'result': False})
         return Response({'result': False})
 
     @action(methods=['post'], detail=False)
