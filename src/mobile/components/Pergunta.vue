@@ -40,7 +40,7 @@
             </label>
 
             <p class="center" v-if="aluno === respondedor.id">
-              <button type="submit" class="btn">Responder</button>
+              <button type="submit" class="btn" :disabled="respondendo">Responder</button>
             </p>
           </form>
         </template>
@@ -108,6 +108,7 @@
         status: null,
         intervalo: null,
         error_count: 0,
+        respondendo: false,
         mostra_grupo: this.$global.colaboracao
       }
     },
@@ -123,6 +124,7 @@
         this.resultado = null
         this.acerto = null
         this.status = null
+        this.respondendo = false
       },
       getQuestao: function () {
         this.resetData()
@@ -151,6 +153,7 @@
           })
       },
       responder: function () {
+        this.respondendo = true
         if (!this.resposta) {
           this.error = true
         } else {
