@@ -74,7 +74,7 @@ class SimpleGrupoSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Grupo
-        fields = ('id','__str__', 'foto', 'aluno_set', 'total')
+        fields = ('id','__str__', 'foto', 'aluno_set', 'total', 'acertos', 'respondidas')
 
 
 class PlacarSerializer(serializers.ModelSerializer):

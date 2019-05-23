@@ -43,14 +43,12 @@
               <td>Competição</td>
               <td style="text-align:center">
                 <Check :bool="modulo.competicao"></Check>
-                </span>
               </td>
             </tr>
             <tr>
               <td>Colaboração</td>
               <td style="text-align:center">
                 <Check :bool="modulo.colaboracao"></Check>
-                </span>
               </td>
             </tr>
             <tr>
@@ -83,12 +81,14 @@
           <tr>
             <th>Posição</th>
             <th>Nome</th>
-            <th>Pontos</th>
+            <th v-if="modulo.competicao">Pontos</th>
+            <th>Acertos</th>
           </tr>
-          <tr v-for="(placar, index) in modulo.placar">
+          <tr v-for="(placar, index) in modulo.placar" :key="placar.id">
             <td>{{ index+1 }}</td>
             <td>{{ placar.grupo.__str__ }}</td>
-            <td>{{ placar.pontos }}</td>
+            <td v-if="modulo.competicao">{{ placar.pontos }}</td>
+            <td>{{placar.grupo.acertos}}</td>
           </tr>
         </table>
       </div>
