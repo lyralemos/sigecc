@@ -5,7 +5,7 @@ from rest_framework.authtoken import views
 
 from .views import AlunoViewSet, ModuloViewSet, PerfilPerguntaViewSet, \
     GrupoViewSet, PlacarViewSet, QuestaoViewSet, PerguntaFlowViewSet, \
-    DesafioViewSet, PerguntaViewSet
+    DesafioViewSet, PerguntaViewSet, check_users
 
 router = routers.DefaultRouter()
 router.register(r'alunos', AlunoViewSet)
@@ -22,5 +22,6 @@ router.register(r'desafio', DesafioViewSet)
 urlpatterns = [
     url(r'^v1/', include(router.urls)),
     url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'^api-auth/', include('rest_framework.urls'))
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^check/', check_users)
 ] 

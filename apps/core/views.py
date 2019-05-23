@@ -212,3 +212,11 @@ class DesafioViewSet(viewsets.ModelViewSet):
     def grupo(self, request):
         desafios = DesafioGrupo.objects.filter(grupo=request.user.aluno.grupo).values_list('desafio_id', flat=True)
         return Response({'desafios': desafios})
+
+
+def check_users(request):
+    if request.POST:
+        enviados = request.POST['emails']
+        cadastrados = list(Aluno.objects.filter(modulo__ativo=True).values_list('user__email', flat=True))
+        emails = list(set(enviados.split()) - set(cadastrados))
+    return render(request, 'check.html', locals())
