@@ -16,6 +16,8 @@ class GrupoQuestaoInline(admin.TabularInline):
 
 class GrupoAdmin(admin.ModelAdmin):
     inlines = [GrupoQuestaoInline]
+    list_display = ('__str__', 'respondidas', 'acertos')
+    list_filter = ('modulo',)
 
 
 class GrupoQuestaoAlunoInline(admin.TabularInline):
@@ -27,8 +29,20 @@ class GrupoQuestaoAmdin(admin.ModelAdmin):
 
 
 class AlunoAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'genero')
+    list_display = ('nome', 'genero', 'user_email', 'flow')
+    search_fields = ('user__email', 'nome')
+    list_filter = ('modulo',)
 
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = 'E-mail do Usuário'
+
+    def flow(self, obj):
+        qtd = obj.respostaflow_set.count()
+        if qtd == 36:
+            return True
+        return False
+    flow.boolean = True
 
 class PerguntaAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'resposta')
@@ -40,6 +54,7 @@ class DesafioGrupoAdmin(admin.ModelAdmin):
 
 class RespostaFlowAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'aluno')
+    list_filter = ('aluno__modulo',)
 
 
 class PlacarAdmin(admin.ModelAdmin):
