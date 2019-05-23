@@ -108,7 +108,7 @@ class Grupo(models.Model):
     respondidas = models.IntegerField(default=0)
     acertos = models.IntegerField(default=0)
     sequencia = models.IntegerField(default=0)
-    foto = models.ImageField(upload_to='fotos/%Y/%m/%d/', null=True)
+    foto = models.ImageField(upload_to='fotos/%Y/%m/%d/', null=True, blank=True)
     fotografo = models.ForeignKey(Aluno, related_name="fotografo", on_delete=models.CASCADE, blank=True, null=True)
 
     @property
