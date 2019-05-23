@@ -1,6 +1,6 @@
 <template>
   <section>
-    <form acion="#" method="post" @submit="checkForm">
+    <form acion="#" method="post" @submit.prevent="checkForm">
       <p class="errors" v-if="errors.length">
         <b>Por favor corrija os seguintes erros</b>
         <ul>
@@ -56,7 +56,7 @@
 
         <div class="divider"></div>
 
-        <button type="submit" class="btn">Registrar</button>
+        <button type="submit" class="btn" :disabled="enviando">Registrar</button>
       </div>
     </form>
   </section>
@@ -74,7 +74,8 @@
         nascimento: null,
         email: null,
         genero: '',
-        errors: []
+        errors: [],
+        enviando: false
       }
     },
     mounted: function () {
@@ -82,6 +83,12 @@
     },
     methods: {
       checkForm: function (e) {
+        if (this.enviando === true) {
+          return
+        }
+
+        // define estado async
+        this.enviando = true
         this.errors = []
         if (this.isValid()) {
           this.$http.post('/api/v1/alunos/', {
@@ -95,13 +102,14 @@
             localStorage.setItem('user-token', token)
             this.$router.push('/espera')
           }).catch((err) => {
+            this.enviando = false
             this.errors = err.data.errors
             window.scrollTo(0, 0)
           })
         } else {
+          this.enviando = false
           this.errors.push('Verifique os erros para continuar')
         }
-        e.preventDefault()
       },
       isValid: function (evt) {
         if (this.cpf !== '') {
